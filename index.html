@@ -370,8 +370,8 @@
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
               <div>
                 <span class="badge badge-sage">Verified Donor Account</span>
-                <h2 style="margin: 0.5rem 0 0.25rem;">Welcome back, Margaret Sharma 💙</h2>
-                <p class="text-muted" style="margin: 0;">Donor ID: <code>DNR-4091</code> &bull; All contributions logged in auditable ledger</p>
+                <h2 style="margin: 0.5rem 0 0.25rem;" id="donor-welcome-name">Welcome back, Margaret Sharma 💙</h2>
+                <p class="text-muted" style="margin: 0;">Donor ID: <code id="donor-welcome-id">DNR-4091</code> &bull; All contributions logged in auditable ledger</p>
               </div>
               <div style="display: flex; gap: 1rem;">
                 <div style="background: var(--color-warm-cream); padding: 1rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center;">
@@ -382,6 +382,41 @@
                   <span style="font-size: 0.8rem; color: var(--color-muted-text); text-transform: uppercase;">Contributions</span>
                   <div id="donor-total-txns" style="font-size: 1.6rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif);">4 Donations</div>
                 </div>
+              </div>
+            </div>
+
+            <!-- Active Campaigns Available to Support (All Campaigns in Donor Account) -->
+            <div style="margin-bottom: 2.25rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                  <span class="badge badge-terracotta" style="margin-bottom: 0.35rem;">Verified Causes</span>
+                  <h3 style="margin: 0.2rem 0 0.15rem; font-size: 1.35rem;">Active Campaigns Available to Support</h3>
+                  <p class="text-muted" style="margin: 0; font-size: 0.88rem;">
+                    Select any cause below to inspect verified financial records and simulate contributions.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-outline" onclick="switchDashboardTab('portal-explore')" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">
+                  ✦ Open Explore Grid View
+                </button>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table class="nexus-table">
+                  <thead>
+                    <tr>
+                      <th>Cause / Campaign</th>
+                      <th>Category</th>
+                      <th>Target Goal</th>
+                      <th>Collected</th>
+                      <th>Audited Balance</th>
+                      <th>Progress</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="donor-campaigns-tbody">
+                    <!-- Rendered dynamically via renderDonorDashboard() -->
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -912,8 +947,8 @@
   </div>
 
   <!-- JavaScript Scripts with Cache Busting -->
-  <script src="js/campaigns-data.js?v=10"></script>
-  <script src="js/campaigns-ui.js?v=10"></script>
-  <script src="js/main.js?v=10"></script>
+  <script src="js/campaigns-data.js?v=12"></script>
+  <script src="js/campaigns-ui.js?v=12"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>

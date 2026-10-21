@@ -555,8 +555,17 @@ function setupDashboardTabs() {
 
 // 10. Donor Dashboard Renderer (Matching reference slide 22 & 23)
 function renderDonorDashboard() {
-  const txns = window.nexusStore.transactions;
+  const currentUser = getCurrentUser();
+  const txns = window.nexusStore.transactions || [];
+  const campaigns = window.nexusStore.campaigns || [];
   const totalGiven = txns.reduce((sum, t) => sum + t.amount, 0);
+
+  // Update Welcome Banner
+  const welcomeName = document.getElementById('donor-welcome-name');
+  if (welcomeName) welcomeName.textContent = `Welcome back, ${currentUser.name} 💙`;
+
+  const welcomeId = document.getElementById('donor-welcome-id');
+  if (welcomeId) welcomeId.textContent = currentUser.id || 'DNR-4091';
 
   const totalElem = document.getElementById('donor-total-given');
   if (totalElem) totalElem.textContent = `₹${totalGiven.toLocaleString('en-IN')}`;
@@ -564,6 +573,42 @@ function renderDonorDashboard() {
   const countElem = document.getElementById('donor-total-txns');
   if (countElem) countElem.textContent = `${txns.length} Donations`;
 
+  // Render All Active Campaigns Table in Donor Portal
+  const campTbody = document.getElementById('donor-campaigns-tbody');
+  if (campTbody) {
+    campTbody.innerHTML = campaigns.map(c => {
+      const pct = Math.min(100, Math.round((c.collected / c.target) * 100));
+      const remaining = c.collected - c.verifiedExpenses;
+      return `
+        <tr>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">
+            <div style="font-weight: 600; color: var(--color-cocoa-heading);">${c.icon} ${c.title}</div>
+            <div style="font-size: 0.78rem; color: var(--color-muted-text); margin-top: 0.2rem;">📍 ${c.location} &bull; ${c.daysLeft} days left</div>
+          </td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">
+            <span class="badge badge-sage" style="font-size: 0.75rem;">${c.categoryLabel}</span>
+          </td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige); font-size: 0.88rem;">₹${c.target.toLocaleString('en-IN')}</td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige); font-weight: 600; color: var(--color-forest-sage); font-size: 0.88rem;">₹${c.collected.toLocaleString('en-IN')}</td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige); font-weight: 700; color: var(--color-forest-sage); font-size: 0.88rem;">₹${remaining.toLocaleString('en-IN')}</td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige); min-width: 110px;">
+            <div style="font-size: 0.78rem; font-weight: 600; margin-bottom: 0.2rem;">${pct}%</div>
+            <div class="progress-container" style="height: 6px; margin: 0;">
+              <div class="progress-bar" style="width: ${pct}%;"></div>
+            </div>
+          </td>
+          <td style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">
+            <div style="display: flex; gap: 0.35rem;">
+              <button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.78rem;" onclick="openCampaignModal('${c.id}')">Ledger</button>
+              <button class="btn btn-primary" style="padding: 0.3rem 0.7rem; font-size: 0.78rem;" onclick="openDonationModal('${c.id}')">Donate</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Render Giving History Table
   const tbody = document.getElementById('donor-history-tbody');
   if (tbody) {
     tbody.innerHTML = txns.map(t => `
