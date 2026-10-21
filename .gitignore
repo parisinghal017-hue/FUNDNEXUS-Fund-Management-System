@@ -1,0 +1,19 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C++ binaries
+*.o
+*.obj
+*.exe
+
+# Database files
+database/*.db
+*.db
+
+# Temporary & Archive files
+*.log
+*.zip
+.DS_Store
+Thumbs.db
