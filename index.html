@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fund Nexus — Transparent Fund Management & Donation Tracking</title>
+  
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Global Stylesheet with Cache Busting -->
+  <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body>
+
+  <!-- 1. Header & Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-icon">FN</span>
+        <span>Fund Nexus</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#causes">Explore Causes</a></li>
+        <li><a href="#transparency">Financial Ledger</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Dark and Light Mode">
+          <span id="theme-icon">🌙</span> <span id="theme-text">Dark</span>
+        </button>
+        <button id="user-role-btn" class="btn btn-outline" onclick="openLoginModal()" style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.84rem; padding: 0.45rem 0.85rem;" title="Switch User Role & Permissions">
+          <span id="nav-user-icon">👤</span>
+          <span id="nav-user-name">Guest</span>
+          <span id="nav-role-badge" class="badge badge-sage" style="font-size: 0.68rem; padding: 0.12rem 0.45rem;">Public</span>
+        </button>
+        <a href="#causes" class="btn btn-outline" onclick="showNexusFeedback('Campaign discovery is active below!')">Browse Causes</a>
+        <button class="btn btn-primary" onclick="openDonationModal('CMP-101')">Simulate Donation</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Hero Section -->
+  <main>
+    <section class="hero-section" id="home">
+      <div class="container">
+        <div class="hero-grid">
+          
+          <!-- Hero Copy -->
+          <div>
+            <div class="hero-badge">
+              <span class="badge badge-sage">✦ Transparent Crowdfunding & Auditable Ledgers</span>
+            </div>
+            
+            <h1 class="hero-title">Every Act of <em>Kindness</em> Changes a Life.</h1>
+            
+            <p class="hero-subtitle">
+              Fund Nexus provides a single, unified platform where compassionate donors and fundraisers meet. Every contribution is simulated, tracked in real-time, and backed by verifiable expense ledgers.
+            </p>
+            
+            <div class="hero-actions">
+              <a href="#causes" class="btn btn-primary">Explore Active Causes</a>
+              <a href="#transparency" class="btn btn-secondary">See How We Track Funds</a>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.8rem; font-size: 0.88rem; color: var(--color-muted-text);">
+              <span class="badge-simulation">SIMULATION NOTICE</span>
+              <span>College Educational PBL Project — All transactions are simulated.</span>
+            </div>
+          </div>
+
+          <!-- Hero Spotlight Card (Interactive Ledger Demo) -->
+          <div class="hero-spotlight">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="badge badge-sage">Education & Health</span>
+              <span style="font-size: 0.8rem; color: var(--color-forest-sage); font-weight: 600;">● Active Campaign</span>
+            </div>
+
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem;">Solar Water Filters for Hill Schools</h3>
+            <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 1.25rem;">
+              Organized by <strong>Doon Rural Welfare Trust</strong> to provide potable drinking water to 4 community schools in Uttarakhand.
+            </p>
+
+            <!-- Progress -->
+            <div class="progress-container">
+              <div class="progress-bar" id="hero-progress-bar" style="width: 63%;"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 1.25rem;">
+              <div>
+                <span class="text-muted">Collected:</span>
+                <strong id="hero-collected">₹95,000</strong>
+              </div>
+              <div>
+                <span class="text-muted">Target:</span>
+                <strong>₹1,50,000</strong>
+              </div>
+            </div>
+
+            <!-- Mini Ledger Snapshot -->
+            <div style="background-color: var(--color-warm-cream); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--color-nude-beige); margin-bottom: 1.25rem;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--color-muted-text); text-transform: uppercase; margin-bottom: 0.5rem;">
+                Audited Financial Ledger Summary
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                <span>Simulated Donations Collected:</span>
+                <span id="hero-ledger-collected" style="font-weight: 600;">₹95,000</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem;">
+                <span>Admin-Reviewed Expenses:</span>
+                <span style="font-weight: 600; color: var(--color-terracotta);">- ₹25,000</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 700; color: var(--color-forest-sage); border-top: 1px dashed var(--color-nude-beige); padding-top: 0.4rem; margin-top: 0.4rem;">
+                <span>Recorded Remaining Balance:</span>
+                <span id="hero-remaining">₹70,000</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" onclick="openDonationModal('CMP-101')">
+              ✦ Simulate Donation for this Cause
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Platform Statistics Bar -->
+    <section class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <h3 id="stats-total-donations" data-target="4850000" data-prefix="₹">₹0</h3>
+            <p>Tracked Donations</p>
+          </div>
+          <div class="stat-item">
+            <h3 data-target="1250" data-suffix="+">0</h3>
+            <p>Simulated Donors</p>
+          </div>
+          <div class="stat-item">
+            <h3 data-target="42" data-suffix="">0</h3>
+            <p>Active Verified Causes</p>
+          </div>
+          <div class="stat-item">
+            <h3 data-target="100" data-suffix="%">0%</h3>
+            <p>Auditable Ledgers</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. How Fund Nexus Works (4-Step Workflow) -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="badge badge-terracotta" style="margin-bottom: 0.75rem;">Accountability In Action</span>
+          <h2>How Fund Nexus Works</h2>
+          <p class="section-subtitle">
+            A transparent four-step cycle ensuring complete visibility from the moment a cause is created to the exact rupee of reported expenditure.
+          </p>
+        </div>
+
+        <div class="workflow-grid">
+          <div class="workflow-card">
+            <div class="workflow-step-num">1</div>
+            <h3>Cause Registration</h3>
+            <p>Fundraisers submit causes with specific financial goals, detailed purposes, and required milestone projections.</p>
+          </div>
+
+          <div class="workflow-card">
+            <div class="workflow-step-num">2</div>
+            <h3>Simulated Giving</h3>
+            <p>Donors contribute to campaigns through simulated donations, receiving instant transaction receipts and tracking tokens.</p>
+          </div>
+
+          <div class="workflow-card">
+            <div class="workflow-step-num">3</div>
+            <h3>Transparent Ledger</h3>
+            <p>Transactions are instantly recorded into the immutable fund ledger, calculating running balances in real-time.</p>
+          </div>
+
+          <div class="workflow-card">
+            <div class="workflow-step-num">4</div>
+            <h3>Admin & Evidence Audit</h3>
+            <p>Disbursements require proof of purchase. Only administrator-verified expenses are deducted from the verified balance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Financial Transparency Engine Explainer -->
+    <section class="section transparency-section" id="transparency">
+      <div class="container">
+        <div class="transparency-box">
+          <div style="text-align: center; max-width: 680px; margin: 0 auto 2rem;">
+            <span class="badge badge-sage" style="margin-bottom: 0.75rem;">Strict Financial Logic</span>
+            <h2>The Fund Transparency Principle</h2>
+            <p class="section-subtitle">
+              Unlike traditional platforms where expenses are self-reported with zero accountability, Fund Nexus calculates remaining balances using verified audit stages.
+            </p>
+          </div>
+
+          <!-- Formula Demonstration Box -->
+          <div class="transparency-formula-grid">
+            <div class="formula-card">
+              <div class="label">Total Recorded Donations</div>
+              <div class="amount" id="transparency-total-donations">₹0</div>
+              <div style="font-size: 0.78rem; color: var(--color-forest-sage); margin-top: 0.35rem;">100% Simulated Inflow</div>
+            </div>
+
+            <div class="operator">−</div>
+
+            <div class="formula-card">
+              <div class="label">Admin-Reviewed Expenses</div>
+              <div class="amount" id="transparency-verified-expenses">₹0</div>
+              <div style="font-size: 0.78rem; color: var(--color-terracotta); margin-top: 0.35rem;">Verified Receipts Only</div>
+            </div>
+
+            <div class="operator">=</div>
+
+            <div class="formula-card remaining">
+              <div class="label">Recorded Remaining Balance</div>
+              <div class="amount" id="transparency-remaining-balance">₹0</div>
+              <div style="font-size: 0.78rem; color: var(--color-cocoa-heading); margin-top: 0.35rem;">Available Unspent Funds</div>
+            </div>
+          </div>
+
+          <!-- 3-Tier Expense State Clarification -->
+          <div class="expense-status-matrix">
+            <div class="status-guide-item">
+              <div class="status-dot" style="background-color: #D9822B;"></div>
+              <div>
+                <strong style="color: var(--color-cocoa-heading); font-size: 0.95rem;">1. Reported Expense</strong>
+                <p style="font-size: 0.85rem; color: var(--color-muted-text); margin: 0.25rem 0 0;">
+                  Claimed by the fundraiser. Logged in the ledger as pending documentation. Does <em>not</em> deduct from verified balance.
+                </p>
+              </div>
+            </div>
+
+            <div class="status-guide-item">
+              <div class="status-dot" style="background-color: #2F80ED;"></div>
+              <div>
+                <strong style="color: var(--color-cocoa-heading); font-size: 0.95rem;">2. Evidence Submitted</strong>
+                <p style="font-size: 0.85rem; color: var(--color-muted-text); margin: 0.25rem 0 0;">
+                  Invoices, payment receipts, or photographic proof uploaded for platform auditor examination.
+                </p>
+              </div>
+            </div>
+
+            <div class="status-guide-item">
+              <div class="status-dot" style="background-color: var(--color-forest-sage);"></div>
+              <div>
+                <strong style="color: var(--color-cocoa-heading); font-size: 0.95rem;">3. Admin-Reviewed & Approved</strong>
+                <p style="font-size: 0.85rem; color: var(--color-muted-text); margin: 0.25rem 0 0;">
+                  Audited by platform administrators. Officially confirmed and deducted from the remaining available balance.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Audited Transaction Ledger Feed -->
+          <div style="margin-top: 2.25rem; background: var(--color-white); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <span class="badge badge-sage">● Real-Time Audited Inflow</span>
+                <h3 style="margin: 0.4rem 0 0.2rem; font-size: 1.35rem;">Public Financial Transaction Ledger</h3>
+                <p class="text-muted" style="margin: 0; font-size: 0.85rem;">
+                  Every simulated contribution across all campaigns is instantly timestamped and recorded in this immutable ledger.
+                </p>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span id="live-ledger-badge" style="font-size: 0.82rem; font-weight: 700; color: var(--color-forest-sage); background: var(--color-pale-sage); padding: 0.4rem 0.85rem; border-radius: var(--radius-pill); border: 1px solid #c9d8c3;">
+                  ✓ Ledger In Sync
+                </span>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="nexus-table">
+                <thead>
+                  <tr>
+                    <th>Date & Time</th>
+                    <th>Cause Supported</th>
+                    <th>Donor Name</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Audit Ref ID</th>
+                  </tr>
+                </thead>
+                <tbody id="transparency-live-ledger-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Featured Active Campaigns & Discovery -->
+    <section class="section" id="causes">
+      <div class="container">
+        
+        <!-- Active Session & Role Status Indicator Banner -->
+        <div id="role-status-banner" style="display: flex; justify-content: space-between; align-items: center; background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-lg); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span id="role-status-icon" style="font-size: 1.1rem;">🌐</span>
+            <span>Active Session: <strong id="role-status-name">Guest (Public Visitor)</strong> &bull; Access Level: <span id="role-status-badge" class="badge badge-sage">Public Access</span></span>
+          </div>
+          <button type="button" class="btn btn-outline" onclick="openLoginModal()" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">
+            🔑 Switch Role / Log In
+          </button>
+        </div>
+
+        <!-- Role Dashboard Tabs Switcher (Gated by Active Role) -->
+        <div class="dashboard-tabs-nav" id="dashboard-tabs-nav">
+          <button class="dashboard-tab-btn active" data-tab="portal-explore" id="tab-btn-explore">✦ Explore Causes</button>
+          <button class="dashboard-tab-btn" data-tab="portal-donor" id="tab-btn-donor" style="display: none;">👤 Donor Dashboard</button>
+          <button class="dashboard-tab-btn" data-tab="portal-fundraiser" id="tab-btn-fundraiser" style="display: none;">📊 Fundraiser Portal</button>
+          <button class="dashboard-tab-btn" data-tab="portal-admin" id="tab-btn-admin" style="display: none;">🛡️ Admin & Transparency Audit</button>
+        </div>
+
+        <!-- VIEW 1: Public Explore Portal -->
+        <div class="portal-view" id="portal-explore" style="display: block;">
+          <div class="section-title-wrap">
+            <span class="badge badge-terracotta" style="margin-bottom: 0.75rem;">Verified Initiatives</span>
+            <h2>Explore Active Campaigns</h2>
+            <p class="section-subtitle">
+              Filter by cause, search verified fundraisers, and review transparent real-time balance sheets before simulating a contribution.
+            </p>
+          </div>
+
+          <!-- Dynamic Filter & Search Toolbar -->
+          <div class="filter-bar-wrap">
+            <div class="category-pills">
+              <button class="filter-btn active" data-category="all">All Causes</button>
+              <button class="filter-btn" data-category="education">Education</button>
+              <button class="filter-btn" data-category="healthcare">Healthcare</button>
+              <button class="filter-btn" data-category="disaster">Disaster Relief</button>
+              <button class="filter-btn" data-category="community">Rural Community</button>
+            </div>
+
+            <div class="search-sort-group">
+              <input type="text" id="campaign-search-input" class="nexus-input" placeholder="🔍 Search by cause or location..." style="width: 240px;">
+              <select id="campaign-sort-select" class="nexus-select">
+                <option value="default">Sort by: Default</option>
+                <option value="urgent">Urgency (Days Left)</option>
+                <option value="highest-target">Highest Goal</option>
+                <option value="funded-percent">Most Funded %</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Campaigns Grid rendered via campaigns-ui.js -->
+          <div class="campaign-grid" id="dynamic-campaigns-grid">
+            <!-- Cards rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- VIEW 2: Donor Dashboard View (Matching Reference Slides 22, 23, 26) -->
+        <div class="portal-view" id="portal-donor" style="display: none;">
+          <div style="background: var(--color-white); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-xl); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+              <div>
+                <span class="badge badge-sage">Verified Donor Account</span>
+                <h2 style="margin: 0.5rem 0 0.25rem;">Welcome back, Margaret Sharma 💙</h2>
+                <p class="text-muted" style="margin: 0;">Donor ID: <code>DNR-4091</code> &bull; All contributions logged in auditable ledger</p>
+              </div>
+              <div style="display: flex; gap: 1rem;">
+                <div style="background: var(--color-warm-cream); padding: 1rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center;">
+                  <span style="font-size: 0.8rem; color: var(--color-muted-text); text-transform: uppercase;">Total Given</span>
+                  <div id="donor-total-given" style="font-size: 1.6rem; font-weight: 700; color: var(--color-terracotta); font-family: var(--font-serif);">₹12,000</div>
+                </div>
+                <div style="background: var(--color-warm-cream); padding: 1rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center;">
+                  <span style="font-size: 0.8rem; color: var(--color-muted-text); text-transform: uppercase;">Contributions</span>
+                  <div id="donor-total-txns" style="font-size: 1.6rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif);">4 Donations</div>
+                </div>
+              </div>
+            </div>
+
+            <h3>Giving History & Simulated Tax Receipts</h3>
+            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.25rem;">
+              Every simulated transaction contains a cryptographic transaction reference ID recorded in the permanent fund ledger.
+            </p>
+
+            <div style="overflow-x: auto;">
+              <table class="nexus-table">
+                <thead>
+                  <tr>
+                    <th>Date & Time</th>
+                    <th>Cause Supported</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Audit Ref ID</th>
+                  </tr>
+                </thead>
+                <tbody id="donor-history-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 3: Fundraiser Dashboard View (Matching Reference Slides 28, 29) -->
+        <div class="portal-view" id="portal-fundraiser" style="display: none;">
+          <div style="background: var(--color-white); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-xl); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+              <div>
+                <span class="badge badge-terracotta">Fundraiser Portal</span>
+                <h2 style="margin: 0.5rem 0 0.25rem;">Fund Management & Expenditure Logging</h2>
+                <p class="text-muted" style="margin: 0;">Organizers must report itemized expenses and upload invoice evidence for admin audit approval.</p>
+              </div>
+              <button class="btn btn-primary" onclick="showNexusFeedback('Campaign creation wizard ready!')">+ Start New Campaign</button>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="nexus-table">
+                <thead>
+                  <tr>
+                    <th>Active Campaign</th>
+                    <th>Target Goal</th>
+                    <th>Collected</th>
+                    <th>Reported Exp.</th>
+                    <th>Verified Balance</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="fundraiser-campaigns-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 4: Admin & Transparency Audit Room (Matching Slide 27) -->
+        <div class="portal-view" id="portal-admin" style="display: none;">
+          <div style="background: var(--color-white); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-xl); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-card);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+              <div>
+                <span class="badge badge-sage">🛡️ Authenticated Platform Auditor</span>
+                <h2 style="margin: 0.5rem 0 0.25rem;">Financial Transparency & Risk Oversight</h2>
+                <p class="text-muted" style="margin: 0;">Logged in as: <strong>Platform Auditor (USR-901)</strong> &bull; Full Authorization Active</p>
+              </div>
+              <button class="btn btn-outline" onclick="logoutUser()" style="border-color: #b73838; color: #b73838; font-size: 0.85rem; padding: 0.45rem 1rem;">
+                🔒 Lock & Exit Admin
+              </button>
+            </div>
+
+            <!-- Risk Engine Status Card -->
+            <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+              <div>
+                <strong style="color: var(--color-cocoa-heading); font-size: 0.98rem;">⚙️ Core Risk Evaluation Engine Status</strong>
+                <p style="font-size: 0.84rem; color: var(--color-muted-text); margin: 0.25rem 0 0;">
+                  Rule-based weights active: Missing Info (+20), High Text Similarity (+25), Target Inconsistency (+15).
+                </p>
+              </div>
+              <span class="badge badge-sage">All Active Causes Low Risk</span>
+            </div>
+
+            <h3>Pending Expense Claims Awaiting Admin Audit</h3>
+            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">
+              Approving an expense deducts it from the campaign's <strong>Recorded Remaining Balance</strong>.
+            </p>
+
+            <div id="admin-audit-cards">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. Frequently Asked Questions (FAQ) -->
+    <section class="section" id="faq" style="background-color: var(--color-light-beige);">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="badge badge-sage" style="margin-bottom: 0.75rem;">Common Questions</span>
+          <h2>Frequently Asked Questions</h2>
+          <p class="section-subtitle">
+            Learn more about how Fund Nexus maintains integrity, simulates transactions, and protects donor trust.
+          </p>
+        </div>
+
+        <div class="faq-wrap">
+          
+          <div class="faq-item active">
+            <button class="faq-question">
+              <span>Is real money processed on this website?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                No. Fund Nexus is an educational Project-Based Learning (PBL) application developed at Graphic Era University. All donations are strictly simulated to model financial tracking, transparent accounting, and ledger integrity without involving real payment gateways.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How does Fund Nexus guarantee fund transparency?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Fund Nexus maintains an auditable financial ledger for every campaign. It distinguishes self-reported claims from evidence-submitted expenses and administrator-verified disbursements. Remaining balances only reflect funds after verified expenditures.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How are duplicate or high-risk campaigns identified?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Our backend C++ engine executes rule-based risk evaluation and text-similarity algorithms across campaign titles and descriptions. Campaigns with suspicious target spikes or high duplicate similarity scores are flagged for manual administrative review.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can fundraisers withdraw unverified funds?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                No. In the Fund Nexus architecture, expenditure logging requires valid category tags and supporting receipts. Administrators audit these submissions before the platform updates the official campaign financial ledger.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 8. Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;">
+            <span class="nav-brand-icon" style="background-color: var(--color-dusty-peach); color: #49352B;">FN</span>
+            <span style="font-family: var(--font-serif); font-size: 1.45rem; font-weight: 700; color: #FFFFFF;">Fund Nexus</span>
+          </div>
+          <p>
+            A Unified Platform for Transparent Fund Management & Donation Tracking. Built with warmth, accountability, and integrity.
+          </p>
+          <div style="margin-top: 1rem;">
+            <span class="badge" style="background: rgba(255,255,255,0.1); color: var(--color-dusty-peach);">
+              Team DSCPP-III-2026-T101
+            </span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#causes">Explore Causes</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#transparency">Ledger Transparency</a></li>
+            <li><a href="#faq">Frequently Asked Questions</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Accountability</h4>
+          <ul>
+            <li><a href="#transparency">Financial Calculations</a></li>
+            <li><a href="#faq">Simulated Donation Policy</a></li>
+            <li><a href="#faq">Risk Flagging System</a></li>
+            <li><a href="#faq">Audit Standards</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Academic Credits</h4>
+          <ul>
+            <li><a href="#">Graphic Era University</a></li>
+            <li><a href="#">Dept. of Computer Science & Engg.</a></li>
+            <li><a href="#">Mentor: Mr. Yuvraj Joshi</a></li>
+            <li><a href="#">3rd Sem B.Tech CSE (PBL)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026-27 Fund Nexus. Educational Project-Based Learning System.
+        </div>
+        <div>
+          Designed for maximum transparency and verifiable fund management.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODALS: Details, Donation Checkout & Receipts
+       ========================================================================== -->
+
+  <!-- Modal 1: Comprehensive Campaign & Transparency Ledger Modal -->
+  <div class="modal-overlay" id="campaign-detail-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="margin-bottom: 1.25rem;">
+        <span class="badge badge-sage" id="modal-c-badge">Category</span>
+        <h2 id="modal-c-title" style="margin: 0.5rem 0 0.25rem; font-size: 1.85rem;">Campaign Title</h2>
+        <p id="modal-c-organizer" class="text-muted" style="font-size: 0.88rem; margin: 0;"></p>
+      </div>
+
+      <p id="modal-c-desc" style="font-size: 0.95rem; line-height: 1.65; margin-bottom: 1.5rem;"></p>
+
+      <!-- Financial Transparency Snapshot -->
+      <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <h4 style="margin: 0; font-size: 1.1rem;">Verified Financial Breakdown</h4>
+          <span style="font-size: 0.78rem; font-weight: 700; color: var(--color-forest-sage); background: var(--color-pale-sage); padding: 0.2rem 0.6rem; border-radius: var(--radius-pill);">
+            Audited Ledger
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; text-align: center;">
+          <div style="background: var(--color-white); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige);">
+            <div style="font-size: 0.75rem; color: var(--color-muted-text); text-transform: uppercase;">Simulated Raised</div>
+            <strong id="modal-ledger-collected" style="font-size: 1.2rem; color: var(--color-cocoa-heading); font-family: var(--font-serif);">₹0</strong>
+          </div>
+          <div style="background: var(--color-white); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige);">
+            <div style="font-size: 0.75rem; color: var(--color-muted-text); text-transform: uppercase;">Reported Exp.</div>
+            <strong id="modal-ledger-reported" style="font-size: 1.2rem; color: #D9822B; font-family: var(--font-serif);">₹0</strong>
+          </div>
+          <div style="background: var(--color-white); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige);">
+            <div style="font-size: 0.75rem; color: var(--color-muted-text); text-transform: uppercase;">Admin-Verified</div>
+            <strong id="modal-ledger-verified" style="font-size: 1.2rem; color: var(--color-terracotta); font-family: var(--font-serif);">₹0</strong>
+          </div>
+          <div style="background: var(--color-pale-sage); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid #c9d8c3;">
+            <div style="font-size: 0.75rem; color: var(--color-forest-sage); text-transform: uppercase; font-weight: 700;">Remaining Balance</div>
+            <strong id="modal-ledger-remaining" style="font-size: 1.2rem; color: var(--color-forest-sage); font-family: var(--font-serif);">₹0</strong>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="modal-c-progress" style="width: 0%;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--color-muted-text); margin-top: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <span id="modal-c-pct">0% Funded</span>
+          <span id="modal-c-donors">0 Donors</span>
+          <span>Raised: <strong id="modal-c-raised" style="color: var(--color-forest-sage);">₹0</strong></span>
+          <span>Target: <strong id="modal-c-target">₹0</strong></span>
+        </div>
+      </div>
+
+      <!-- Itemized Expenses Table -->
+      <h4 style="margin-bottom: 0.75rem;">Itemized Disbursement Ledger</h4>
+      <div style="overflow-x: auto; margin-bottom: 2rem;">
+        <table class="nexus-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Expense Item</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Evidence Reference</th>
+            </tr>
+          </thead>
+          <tbody id="modal-expenses-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Campaign-specific Donations Ledger -->
+      <h4 style="margin-bottom: 0.75rem;">Simulated Inflow & Donation Ledger</h4>
+      <div style="overflow-x: auto; margin-bottom: 2rem;">
+        <table class="nexus-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Donor</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Transaction Ref</th>
+            </tr>
+          </thead>
+          <tbody id="modal-donations-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Updates -->
+      <h4 style="margin-bottom: 0.75rem;">Field Updates from Organizer</h4>
+      <div id="modal-updates-container" style="margin-bottom: 2rem;"></div>
+
+      <div style="text-align: right;">
+        <button class="btn btn-primary" onclick="closeAllModals(); openDonationModal(currentModalCampaignId);">
+          Simulate a Donation for this Cause
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Simulated Donation Checkout Modal -->
+  <div class="modal-overlay" id="donation-checkout-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 520px;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span class="badge badge-sage">Safe Educational Simulation</span>
+        <h2 style="font-size: 1.75rem; margin: 0.5rem 0 0.25rem;">Make a Contribution</h2>
+        <p id="checkout-campaign-title" style="font-weight: 600; color: var(--color-cocoa-heading); margin: 0;"></p>
+        <p id="checkout-organizer" class="text-muted" style="font-size: 0.84rem; margin: 0.2rem 0;"></p>
+        <span id="checkout-remaining-needed" class="text-muted" style="font-size: 0.82rem;"></span>
+      </div>
+
+      <form id="donation-form">
+        <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.4rem;">
+          Select Donation Amount (₹)
+        </label>
+        
+        <div class="preset-grid">
+          <button type="button" class="preset-btn" data-amount="500" onclick="selectPresetAmount(500, this)">₹500</button>
+          <button type="button" class="preset-btn active" data-amount="1000" onclick="selectPresetAmount(1000, this)">₹1,000</button>
+          <button type="button" class="preset-btn" data-amount="2500" onclick="selectPresetAmount(2500, this)">₹2,500</button>
+          <button type="button" class="preset-btn" data-amount="5000" onclick="selectPresetAmount(5000, this)">₹5,000</button>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <input type="number" id="donation-amount-input" class="nexus-input" value="1000" min="1" step="1" required style="width: 100%; font-size: 1.1rem; padding: 0.75rem 1rem;">
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.4rem;">
+            Your Name (or Leave for Anonymous)
+          </label>
+          <input type="text" id="donor-name-input" class="nexus-input" placeholder="e.g. Margaret Sharma" style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.4rem;">
+            Simulated Payment Method
+          </label>
+          <select class="nexus-select" style="width: 100%;">
+            <option>Simulated UPI (Google Pay / PhonePe / BHIM)</option>
+            <option>Simulated Debit / Credit Card</option>
+            <option>Simulated Net Banking</option>
+          </select>
+        </div>
+
+        <div style="background: var(--color-warm-cream); border: 1px dashed var(--color-nude-beige); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: var(--color-muted-text); text-align: center;">
+          🔒 <strong>Simulation Protocol:</strong> No real bank charges or cards are processed. This models auditable ledger updates for college PBL evaluation.
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+          Confirm Simulated Contribution
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Instant Simulated Receipt Modal -->
+  <div class="modal-overlay" id="donation-receipt-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 500px; text-align: center;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="width: 60px; height: 60px; background: var(--color-pale-sage); color: var(--color-forest-sage); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1rem;">
+        ✓
+      </div>
+
+      <span class="badge badge-sage">Transaction Recorded</span>
+      <h2 style="font-size: 1.8rem; margin: 0.5rem 0 0.25rem;">Simulated Contribution Receipt</h2>
+      <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
+        Thank you! Your simulated donation has been permanently recorded in the Fund Nexus ledger.
+      </p>
+
+      <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-lg); padding: 1.5rem; text-align: left; margin-bottom: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+          <span class="text-muted">Transaction Ref ID:</span>
+          <strong id="receipt-txn-id" style="font-family: monospace;">TXN-000000</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+          <span class="text-muted">Date & Time:</span>
+          <span id="receipt-date"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+          <span class="text-muted">Donor Name:</span>
+          <strong id="receipt-donor"></strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+          <span class="text-muted">Supported Cause:</span>
+          <span id="receipt-campaign" style="font-weight: 600; text-align: right; max-width: 60%;"></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--color-nude-beige); padding-top: 0.75rem; margin-top: 0.75rem; font-size: 1.1rem;">
+          <span>Contribution Amount:</span>
+          <strong id="receipt-amount" style="color: var(--color-terracotta); font-family: var(--font-serif);">₹0</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="window.print()">🖨️ Print Receipt</button>
+        <button class="btn btn-secondary" style="flex: 1.2;" onclick="viewDonationInLedger()">📜 View in Ledger</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="closeAllModals()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Role-Based Authentication & Switcher Modal -->
+  <div class="modal-overlay" id="role-login-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 580px;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span class="badge badge-terracotta">Role-Based Access Control (RBAC)</span>
+        <h2 style="font-size: 1.75rem; margin: 0.5rem 0 0.25rem;">Switch Account & Role</h2>
+        <p class="text-muted" style="font-size: 0.88rem; margin: 0;">
+          Select a user persona to test permission-gated dashboard access.
+        </p>
+      </div>
+
+      <!-- Role Selection Cards -->
+      <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem;">
+        
+        <!-- Option 1: Guest / Public Visitor -->
+        <div class="card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid var(--color-nude-beige); transition: all 0.2s;" onclick="switchUserRole('guest')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-warm-cream); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+              🌐
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-cocoa-heading);">Public Guest Visitor</div>
+              <p class="text-muted" style="font-size: 0.8rem; margin: 0;">Public access only &bull; Browse causes, donate, view public ledger</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Select</button>
+        </div>
+
+        <!-- Option 2: Verified Donor (Margaret Sharma) -->
+        <div class="card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid var(--color-nude-beige); transition: all 0.2s;" onclick="switchUserRole('donor')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-pale-sage); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+              👤
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-cocoa-heading);">Margaret Sharma (Verified Donor)</div>
+              <p class="text-muted" style="font-size: 0.8rem; margin: 0;">ID: <code>USR-101</code> &bull; Access personal giving history & receipts</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Log In</button>
+        </div>
+
+        <!-- Option 3: Fundraiser (Doon Rural Welfare Trust) -->
+        <div class="card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid var(--color-nude-beige); transition: all 0.2s;" onclick="switchUserRole('fundraiser')">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #FDE8D7; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+              📊
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-cocoa-heading);">Doon Rural Welfare Trust (Fundraiser)</div>
+              <p class="text-muted" style="font-size: 0.8rem; margin: 0;">ID: <code>USR-201</code> &bull; Manage causes & report itemized expenditures</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Log In</button>
+        </div>
+
+        <!-- Option 4: Platform Auditor / Admin (Password Protected) -->
+        <div class="card" style="padding: 1.15rem 1.25rem; border: 2px solid var(--color-terracotta); background: var(--color-warm-cream);">
+          <div style="display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.75rem;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #FCE8E6; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+              🛡️
+            </div>
+            <div>
+              <div style="font-weight: 700; color: var(--color-cocoa-heading); display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                Platform Auditor & Admin
+                <span class="badge badge-terracotta" style="font-size: 0.68rem; padding: 0.1rem 0.45rem;">🔒 Password Protected</span>
+              </div>
+              <p class="text-muted" style="font-size: 0.8rem; margin: 0;">ID: <code>USR-901</code> &bull; Authorize disbursements & risk audit oversight</p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="password" id="admin-passcode-input" class="nexus-input" placeholder="Enter Admin Password (admin123 or 9010)" style="flex: 1; padding: 0.5rem 0.85rem; font-size: 0.88rem;">
+            <button type="button" class="btn btn-primary" onclick="attemptAdminLogin()" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;">
+              Unlock Admin
+            </button>
+          </div>
+          <div id="admin-auth-error" style="color: #b73838; font-size: 0.82rem; margin-top: 0.4rem; display: none;"></div>
+          <small class="text-muted" style="display: block; margin-top: 0.4rem; font-size: 0.78rem;">
+            Academic Demo Credentials: Password <code>admin123</code> or PIN <code>9010</code>
+          </small>
+        </div>
+
+      </div>
+
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-outline" style="width: 100%;" onclick="closeAllModals()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Scripts with Cache Busting -->
+  <script src="js/campaigns-data.js?v=10"></script>
+  <script src="js/campaigns-ui.js?v=10"></script>
+  <script src="js/main.js?v=10"></script>
+</body>
+</html>
