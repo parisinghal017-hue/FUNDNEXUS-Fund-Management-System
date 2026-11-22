@@ -1,19 +1,20 @@
 # 🌐 Fund Nexus — Transparent Crowdfunding & Multi-Stage Financial Auditing System
 
+> **Live Production Deployment:** [https://parisinghal017-hue.github.io/FUNDNEXUS-Fund-Management-System/](https://parisinghal017-hue.github.io/FUNDNEXUS-Fund-Management-System/)  
 > **Academic Project:** Graphic Era (Deemed to be University)  
-> **Team ID:** DSCPP-III-2026-T101  
+> **Team Name:** HopeX | **Team ID:** DSCPP-III-2026-T101  
 > **Core Focus:** Advanced Data Structures (C++), REST API Architecture (Python), Relational Persistence (SQLite), and Responsive Interactive Frontend (HTML5/CSS3/ES6+).
 
 ---
 
 ## 👥 Project Team & Departmental Contributions
 
-| Team Member | GitHub Username | Role & Departmental Responsibilities |
-| :--- | :--- | :--- |
-| **Pari Singhal** | [@parisinghal017-hue](https://github.com/parisinghal017-hue) | **C++ Core Engine & Data Structures Lead**<br>• Custom Singly Linked List for Immutable Audit Ledger<br>• FIFO Administrative Review Queue<br>• Jaccard Token Text Similarity Algorithm<br>• Rule-based Heuristic Campaign Risk Analyzer |
-| **Divyanka** | [@ByteByDivyanka](https://github.com/ByteByDivyanka) | **Backend Architecture & Database Engineer**<br>• Multi-threaded HTTP Server & REST APIs<br>• Relational Database Schema (`campaigns`, `transactions`, `expenses`)<br>• SQLite Atomic Persistence Manager (`nexus_db.py`)<br>• Subprocess C++ IPC Engine Bridge |
-| **Yashasvi Sharma** | [@sharmayashasvi707](https://github.com/sharmayashasvi707) | **Frontend Application & Interactive Client Lead**<br>• Semantic Single-Page Application Layout (`index.html`)<br>• 4-Tier Role Dashboards (Guest, Donor, Fundraiser, Admin)<br>• Dynamic DOM Rendering Engine (`campaigns-ui.js`)<br>• Simulated Donation Checkout Flow & 80G Tax Receipt Generator |
-| **Shreya Sinha** | [@shreya25codes](https://github.com/shreya25codes) | **UI/UX Design System, QA & Documentation Lead**<br>• Warm Editorial UI Design System (`style.css`)<br>• Automated Role-Based Access Control (RBAC) Test Suite<br>• Automated Real-Time Donation & Balance Update Test Suite<br>• End-to-End Multi-Tier Integration Test Suite<br>• Complete Technical Documentation & Specifications |
+| Team Member | Student ID | GitHub Profile | Verified Email | Role & Departmental Responsibilities |
+| :--- | :--- | :--- | :--- | :--- |
+| **Yashasvi Sharma** *(Lead)* | 2510010351 | [@sharmayashasvi707](https://github.com/sharmayashasvi707) | `sharmayashasvi1601@gmail.com` | **Frontend Application & Interactive Client Lead**<br>• Semantic Single-Page Application Layout (`index.html`)<br>• Dynamic DOM Rendering Engine (`campaigns-ui.js`)<br>• 4-Tier Role Dashboards & Custom Donor Registration<br>• Simulated Donation Checkout Flow & 80G Tax Receipt Generator |
+| **Pari Singhal** | 2510012558 | [@parisinghal017-hue](https://github.com/parisinghal017-hue) | `parisinghal017@gmail.com` | **C++ Core Engine & Data Structures Lead**<br>• Custom Singly Linked List for Immutable Audit Ledger<br>• FIFO Administrative Review Queue & Tamper-Proof Audit<br>• Jaccard Token Text Similarity Algorithm<br>• Rule-based Heuristic Campaign Risk Analyzer |
+| **Shreya Sinha** | 2510012232 | [@shreya25codes](https://github.com/shreya25codes) | `shreyasinha3602@gmail.com` | **UI/UX Design System, QA & Documentation Lead**<br>• Warm Editorial UI Design System (`style.css`)<br>• Automated Role-Based Access Control (RBAC) Test Suite<br>• Automated Real-Time Donation & Balance Update Test Suite<br>• End-to-End Multi-Tier Integration Test Suite<br>• Complete Technical Documentation & Specifications |
+| **Divyanka Kumari** | 2510012306 | [@ByteByDivyanka](https://github.com/ByteByDivyanka) | `divyanka.edu@gmail.com` | **Backend Architecture & Database Engineer**<br>• Multi-threaded HTTP Server & REST APIs (`server.py`)<br>• Relational Database Schema (`campaigns`, `transactions`, `expenses`)<br>• SQLite Atomic Persistence Manager (`nexus_db.py`)<br>• Subprocess C++ IPC Engine Bridge |
 
 ---
 
@@ -104,9 +105,30 @@ python tests/test_integration.py
 
 ---
 
-## 🔒 Role-Based Access Control (RBAC) Credentials
+## 🔒 Zero-Trust PIN Authentication & Testing Credentials
 
-* **Guest (Public):** Explore causes, inspect verified ledger, calculate balances.
-* **Donor (`USR-101`):** Simulated donation checkout, view personal history, generate 80G tax receipt.
-* **Fundraiser (`USR-201`):** Submit expense claims, upload invoice references.
-* **Admin Auditor (`USR-901`):** Password-protected (`admin123` or `9010`), review proof, authorize disbursements.
+Fund Nexus implements **Zero-Trust Role-Based & Attribute-Based Access Control (RBAC/ABAC)** complying with OWASP A01 & A07 to prevent cross-account impersonation:
+
+| Role / Profile | Identity ID | Default PIN / Password | Capabilities & Scope |
+| :--- | :--- | :--- | :--- |
+| **Guest / Public** | Public Visitor | *None (Open)* | Browse causes, review transparency formulas, inspect public audit ledger & certificates. |
+| **Donor: Margaret** | `USR-101` | `1010` | Personal tax receipts, private donation history, campaign donation flow. |
+| **Donor: Aarav** | `USR-102` | `1020` | Personal tax receipts, private donation history, campaign donation flow. |
+| **Donor: Pari** | `USR-103` | `1030` | Personal tax receipts, private donation history, campaign donation flow. |
+| **Donor: Yashasvi** | `USR-104` | `1040` | Personal tax receipts, private donation history, campaign donation flow. |
+| **Donor: Rohan** | `USR-105` | `1050` | Personal tax receipts, private donation history, campaign donation flow. |
+| **+ Custom Donor** | `USR-CUSTOM-...` | *User Defined (4 Digits)* | Click **"+ Register New Donor Account"** to create a custom donor with persistent local storage. |
+| **Fundraiser** | `USR-201` | `2010` | Create campaigns, upload legal certificates, submit itemized expenses (strictly restricted to own campaigns). |
+| **Admin Gatekeeper** | `USR-901` | `admin123` or `9010` | Statutory certificate inspector, Gatekeeper verification queue, GST invoice review, campaign deletion. |
+
+---
+
+## 🛡️ Key Platform Highlights & Features
+
+1. **Statutory Document & Certificate Inspector:** Inspect authentic NGO trust deeds, 80G registrations, and Darpan certificates directly in the visual inspection sheet modal (`#campaign-doc-preview-modal`).
+2. **Itemized GST Tax Invoice Audit Sheet:** Admins audit vendor details, GSTIN, HSN codes, and itemized lines before deducting expenses from verified balances (`#invoice-preview-modal`).
+3. **Harmonized Dark Editorial Palette:** Fully styled without glaring white backgrounds, using warm mocha, light beige (`#ECE3D4`), and terracotta accents.
+4. **Dual Automated Deployments:**
+   - **GitHub Pages:** Automated deployment via GitHub Actions (`.github/workflows/deploy.yml`).
+   - **Vercel:** Static edge deployment configured via `vercel.json`.
+
