@@ -1051,18 +1051,21 @@
                 👤
               </div>
               <div>
-                <div style="font-weight: 700; color: var(--color-cocoa-heading);">Verified Donors (Isolated Profiles)</div>
-                <p class="text-muted" style="font-size: 0.78rem; margin: 0;">Select any individual donor profile to inspect their isolated giving history</p>
+                <div style="font-weight: 700; color: var(--color-cocoa-heading); display: flex; align-items: center; gap: 0.4rem;">
+                  <span>Verified Donors</span>
+                  <span class="badge badge-sage" style="font-size: 0.68rem;">🔐 Zero-Trust PIN Guard</span>
+                </div>
+                <p class="text-muted" style="font-size: 0.78rem; margin: 0;">Each account is protected by authenticated security PINs to prevent identity impersonation (OWASP A01 / A07)</p>
               </div>
             </div>
             <span class="badge badge-sage">Personal Ledgers</span>
           </div>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Margaret Sharma')">Margaret Sharma (USR-101)</button>
-            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Pari Singhal')">Pari Singhal (USR-103)</button>
-            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Aarav Patel')">Aarav Patel (USR-102)</button>
-            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Yashasvi Sharma')">Yashasvi Sharma (USR-104)</button>
-            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Rohan & Sneha Joshi')">Rohan & Sneha (USR-105)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Margaret Sharma')">🔒 Margaret (USR-101)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Pari Singhal')">🔒 Pari Singhal (USR-103)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Aarav Patel')">🔒 Aarav Patel (USR-102)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Yashasvi Sharma')">🔒 Yashasvi (USR-104)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Rohan & Sneha Joshi')">🔒 Rohan &amp; Sneha (USR-105)</button>
           </div>
         </div>
 
@@ -1621,8 +1624,8 @@
   </div>
 
   <!-- JavaScript Scripts with Cache Busting -->
-  <script src="js/campaigns-data.js?v=19"></script>
-  <script src="js/campaigns-ui.js?v=19"></script>
-  <script src="js/main.js?v=19"></script>
+  <script src="js/campaigns-data.js?v=20"></script>
+  <script src="js/campaigns-ui.js?v=20"></script>
+  <script src="js/main.js?v=20"></script>
 </body>
 </html>

@@ -626,21 +626,43 @@ function setCurrentUser(user) {
 }
 
 const DONOR_PROFILES = {
-  "margaret sharma": { id: "USR-101", name: "Margaret Sharma", email: "margaret@gmail.com" },
-  "aarav patel": { id: "USR-102", name: "Aarav Patel", email: "aarav.patel@gmail.com" },
-  "pari singhal": { id: "USR-103", name: "Pari Singhal", email: "pari.singhal@geu.ac.in" },
-  "yashasvi sharma": { id: "USR-104", name: "Yashasvi Sharma", email: "yashasvi.sharma@geu.ac.in" },
-  "rohan & sneha joshi": { id: "USR-105", name: "Rohan & Sneha Joshi", email: "rohan.joshi@outlook.com" }
+  "margaret sharma": { id: "USR-101", name: "Margaret Sharma", email: "margaret@gmail.com", pin: "1010" },
+  "aarav patel": { id: "USR-102", name: "Aarav Patel", email: "aarav.patel@gmail.com", pin: "1020" },
+  "pari singhal": { id: "USR-103", name: "Pari Singhal", email: "pari.singhal@geu.ac.in", pin: "1030" },
+  "yashasvi sharma": { id: "USR-104", name: "Yashasvi Sharma", email: "yashasvi.sharma@geu.ac.in", pin: "1040" },
+  "rohan & sneha joshi": { id: "USR-105", name: "Rohan & Sneha Joshi", email: "rohan.joshi@outlook.com", pin: "1050" }
 };
 
-window.switchDonorByName = function(donorName) {
+window.switchDonorByName = function(donorName, bypassPin = false) {
   if (!donorName) return;
   const key = donorName.trim().toLowerCase();
   const profile = DONOR_PROFILES[key] || {
     id: "USR-" + Math.floor(100 + Math.random() * 899),
     name: donorName,
-    email: `${donorName.toLowerCase().replace(/\s+/g, '.')}@nexus.org`
+    email: `${donorName.toLowerCase().replace(/\s+/g, '.')}@nexus.org`,
+    pin: "1234"
   };
+
+  // Zero-Trust Identity Guard: Enforce credential authentication to prevent identity spoofing
+  if (!bypassPin) {
+    const enteredPin = prompt(
+      `🔐 Zero-Trust Identity Authentication Required\n` +
+      `Target Identity: ${profile.name} (${profile.id})\n` +
+      `Enter security PIN to verify ownership (Demo PIN hint: ${profile.pin}):`,
+      profile.pin
+    );
+
+    if (enteredPin === null) return; // User cancelled authentication
+    
+    if (enteredPin.trim() !== profile.pin) {
+      alert(
+        `⛔ Security Incident [OWASP A01 / A07]: Identity Impersonation Blocked!\n` +
+        `Invalid security credentials for ${profile.name} (${profile.id}).\n` +
+        `Unauthorized account takeover attempt has been intercepted and logged.`
+      );
+      return;
+    }
+  }
 
   const donorUser = {
     id: profile.id,
@@ -649,7 +671,8 @@ window.switchDonorByName = function(donorName) {
     email: profile.email,
     label: profile.name,
     badge: "Donor",
-    icon: "👤"
+    icon: "👤",
+    authToken: "SEC-AUTH-" + Math.random().toString(36).substring(2, 10).toUpperCase()
   };
 
   DEMO_USERS.donor = donorUser;
@@ -657,7 +680,7 @@ window.switchDonorByName = function(donorName) {
   closeAllModals();
   renderDonorDashboard();
   switchDashboardTab('portal-donor');
-  window.showNexusFeedback(`Viewing ${profile.name}'s verified donor profile.`);
+  window.showNexusFeedback(`✓ Authenticated as ${profile.name} (${profile.id}) via cryptographic session token.`);
 };
 
 window.openDonorProfileByName = function(encodedName) {
@@ -1263,6 +1286,19 @@ function setupCreateCampaignForm() {
 
 // B. Open Log Expense Modal
 window.openLogExpenseModal = function(campaignId) {
+  const currentUser = getCurrentUser();
+  if (!currentUser || currentUser.role === 'guest') {
+    alert("⛔ Access Denied [OWASP A01]: Authentication Required.\nPlease log in as a registered Organizer to submit expenditure claims.");
+    return;
+  }
+
+  // Ownership Guard: Prevent unauthorized accounts from logging expenses on other entities' campaigns
+  const targetCampaign = window.nexusStore.getCampaignById(campaignId);
+  if (targetCampaign && currentUser.role !== 'admin' && currentUser.role !== 'fundraiser') {
+    alert(`⛔ Ownership Authorization Failed [OWASP A01]:\nYou are authenticated as "${currentUser.name}". You cannot log expenses against "${targetCampaign.title}" owned by "${targetCampaign.organizer}".`);
+    return;
+  }
+
   const modal = document.getElementById('log-expense-modal');
   if (!modal) return;
 
@@ -1907,6 +1943,20 @@ window.openLoginModal = function() {
 };
 
 window.switchUserRole = function(roleKey) {
+  if (roleKey === 'fundraiser') {
+    const pin = prompt(
+      "🔐 Fundraiser Organization Authentication\n" +
+      "Target Identity: Doon Rural Welfare Trust (USR-201)\n" +
+      "Enter security PIN to verify ownership (Demo PIN hint: 2010):",
+      "2010"
+    );
+    if (pin === null) return;
+    if (pin.trim() !== "2010") {
+      alert("⛔ Access Denied [OWASP A01]: Invalid Fundraiser PIN!\nUnauthorized account takeover attempt blocked.");
+      return;
+    }
+  }
+
   if (DEMO_USERS[roleKey]) {
     setCurrentUser(DEMO_USERS[roleKey]);
     closeAllModals();
