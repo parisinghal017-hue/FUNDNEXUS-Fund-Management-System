@@ -4,10 +4,10 @@
 #include "Transaction.h"
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-// Node structure matching student's class notebook
 // struct node { Transaction data; struct node *next; };
 struct TransactionNode {
     Transaction data;
@@ -16,10 +16,11 @@ struct TransactionNode {
     TransactionNode(const Transaction& tx) : data(tx), next(nullptr) {}
 };
 
-// Singly Linked List for the Immutable Transaction Ledger
+// Cryptographically Verified Singly Linked List (Hash-Chained Audit Ledger)
 class TransactionLedgerList {
 private:
     TransactionNode* head;
+    TransactionNode* tail;
     int count;
     double totalFunds;
 
@@ -27,15 +28,25 @@ public:
     TransactionLedgerList();
     ~TransactionLedgerList();
 
-    // Core Linked List operations as taught in 3rd Semester Data Structures
-    void insertAtBegin(const Transaction& tx);
-    void insertAtEnd(const Transaction& tx);
-    void insertAfterKey(const string& keyTxnId, const Transaction& tx);
+    // Core Linked List operations 
+    void insertAtBegin(Transaction tx);
+    void insertAtEnd(Transaction tx);
+    void insertAfterKey(const string& keyTxnId, Transaction tx);
     
     int getCount() const;
     double getTotalFunds() const;
     bool isEmpty() const;
+    string getLastHash() const;
 
+    // Cryptographic Blockchain-like Verification
+    bool verifyChainIntegrity(string& outBrokenTxnId, string& outReason, int& outIndex) const;
+    string computeMerkleRoot() const;
+
+    // Tamper Demonstration Operations
+    bool simulateTamper(int nodeIndex, double newAmount);
+    void restoreChain();
+
+    // Display & Serialization
     void displayLedger() const;
     void exportJSON() const;
 };
