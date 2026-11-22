@@ -97,6 +97,12 @@ body.dark-mode .modal-container {
   border-color: var(--color-nude-beige) !important;
 }
 
+[data-theme="dark"] .admin-pending-section,
+body.dark-mode .admin-pending-section {
+  background-color: var(--color-light-beige) !important;
+  border-color: var(--color-terracotta) !important;
+}
+
 [data-theme="dark"] .stats-bar,
 body.dark-mode .stats-bar {
   background-color: #211914 !important;
@@ -1191,3 +1197,116 @@ a:hover {
   border-bottom: 1px solid var(--color-nude-beige);
 }
 
+
+/* ============================================================================
+   ADVANCED EXTENSIONS: CRYPTOGRAPHIC BLOCKCHAIN INSPECTOR & TRIAGE HEAP
+   ============================================================================ */
+.crypto-chain-wrap {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 1.25rem 0.5rem;
+  align-items: center;
+  scrollbar-width: thin;
+}
+
+.crypto-block-card {
+  min-width: 250px;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-nude-beige);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem;
+  box-shadow: 0 4px 15px rgba(73, 53, 43, 0.05);
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.crypto-block-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(73, 53, 43, 0.12);
+}
+
+.crypto-block-card.valid {
+  border-left: 4px solid var(--color-forest-sage);
+}
+
+.crypto-block-card.tampered {
+  border: 2px solid #b73838 !important;
+  background-color: #FFF5F5 !important;
+  animation: pulseTamper 1.5s infinite;
+}
+
+@keyframes pulseTamper {
+  0% { box-shadow: 0 0 0 0 rgba(183, 56, 56, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(183, 56, 56, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(183, 56, 56, 0); }
+}
+
+.crypto-chain-arrow {
+  font-size: 1.4rem;
+  color: var(--color-muted-text);
+  display: flex;
+  align-items: center;
+}
+
+.hash-code {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.76rem;
+  color: #0D6288;
+  background: #EBF8FF;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  word-break: break-all;
+  display: inline-block;
+}
+
+.hash-code.tampered {
+  color: #b73838;
+  background: #FFEBEB;
+}
+
+.triage-badge-critical {
+  background-color: #FCE8E6;
+  color: #C53030;
+  border: 1px solid #FEB2B2;
+}
+
+.triage-badge-urgent {
+  background-color: #FEFCBF;
+  color: #975A16;
+  border: 1px solid #F6E05E;
+}
+
+.triage-badge-routine {
+  background-color: var(--color-pale-sage);
+  color: var(--color-forest-sage);
+  border: 1px solid #C6F6D5;
+}
+
+.liquidity-metric-card {
+  background: var(--color-warm-cream);
+  border: 1px solid var(--color-nude-beige);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.receipt-seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-forest-sage);
+  background: #F4F8F3;
+  color: var(--color-forest-sage);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.25rem;
+  text-transform: uppercase;
+}
