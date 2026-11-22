@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Global Stylesheet with Cache Busting -->
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -322,9 +322,9 @@
         <!-- Role Dashboard Tabs Switcher (Gated by Active Role) -->
         <div class="dashboard-tabs-nav" id="dashboard-tabs-nav">
           <button class="dashboard-tab-btn active" data-tab="portal-explore" id="tab-btn-explore">✦ Explore Causes</button>
-          <button class="dashboard-tab-btn" data-tab="portal-donor" id="tab-btn-donor" style="display: none;">👤 Donor Dashboard</button>
-          <button class="dashboard-tab-btn" data-tab="portal-fundraiser" id="tab-btn-fundraiser" style="display: none;">📊 Fundraiser Portal</button>
-          <button class="dashboard-tab-btn" data-tab="portal-admin" id="tab-btn-admin" style="display: none;">🛡️ Admin & Transparency Audit</button>
+          <button class="dashboard-tab-btn" data-tab="portal-donor" id="tab-btn-donor">👤 Donor Dashboard</button>
+          <button class="dashboard-tab-btn" data-tab="portal-fundraiser" id="tab-btn-fundraiser">📊 Fundraiser Portal</button>
+          <button class="dashboard-tab-btn" data-tab="portal-admin" id="tab-btn-admin">🛡️ Admin & Transparency Audit</button>
         </div>
 
         <!-- VIEW 1: Public Explore Portal -->
@@ -335,6 +335,30 @@
             <p class="section-subtitle">
               Filter by cause, search verified fundraisers, and review transparent real-time balance sheets before simulating a contribution.
             </p>
+          </div>
+
+          <!-- Platform Liquidity & Vault Reserve Analytics Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="liquidity-metric-card">
+              <span style="font-size: 0.78rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Total Platform Inflow</span>
+              <div id="liquidity-total-inflow" style="font-size: 1.5rem; font-weight: 700; color: var(--color-cocoa-heading); font-family: var(--font-serif); margin: 0.35rem 0;">₹7,61,500</div>
+              <span style="font-size: 0.74rem; color: var(--color-forest-sage);">● 100% Cryptographically Chained</span>
+            </div>
+            <div class="liquidity-metric-card">
+              <span style="font-size: 0.78rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Audited Disbursements</span>
+              <div id="liquidity-total-verified" style="font-size: 1.5rem; font-weight: 700; color: var(--color-terracotta); font-family: var(--font-serif); margin: 0.35rem 0;">₹2,09,000</div>
+              <span style="font-size: 0.74rem; color: var(--color-muted-text);">Invoices &amp; Challans Audited</span>
+            </div>
+            <div class="liquidity-metric-card">
+              <span style="font-size: 0.78rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Pending In Audit Triage</span>
+              <div id="liquidity-total-pending" style="font-size: 1.5rem; font-weight: 700; color: #D9822B; font-family: var(--font-serif); margin: 0.35rem 0;">₹1,35,000</div>
+              <span style="font-size: 0.74rem; color: #D9822B;">Held Until Admin Inspection</span>
+            </div>
+            <div class="liquidity-metric-card" style="border-left: 4px solid var(--color-forest-sage); background: #F4F8F3;">
+              <span style="font-size: 0.78rem; color: var(--color-forest-sage); text-transform: uppercase; font-weight: 700;">Liquid Vault Reserve</span>
+              <div id="liquidity-vault-reserve" style="font-size: 1.5rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif); margin: 0.35rem 0;">₹5,52,500</div>
+              <span style="font-size: 0.74rem; color: var(--color-forest-sage); font-weight: 600;">Safe &amp; Unspent Balance</span>
+            </div>
           </div>
 
           <!-- Dynamic Filter & Search Toolbar -->
@@ -371,28 +395,40 @@
               <div>
                 <span class="badge badge-sage">Verified Donor Account</span>
                 <h2 style="margin: 0.5rem 0 0.25rem;" id="donor-welcome-name">Welcome back, Margaret Sharma 💙</h2>
-                <p class="text-muted" style="margin: 0;">Donor ID: <code id="donor-welcome-id">DNR-4091</code> &bull; All contributions logged in auditable ledger</p>
+                <p class="text-muted" style="margin: 0;">Donor ID: <code id="donor-welcome-id">USR-101</code> &bull; All contributions logged in auditable ledger</p>
               </div>
-              <div style="display: flex; gap: 1rem;">
-                <div style="background: var(--color-warm-cream); padding: 1rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center;">
-                  <span style="font-size: 0.8rem; color: var(--color-muted-text); text-transform: uppercase;">Total Given</span>
-                  <div id="donor-total-given" style="font-size: 1.6rem; font-weight: 700; color: var(--color-terracotta); font-family: var(--font-serif);">₹12,000</div>
+              <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <div style="background: var(--color-warm-cream); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige);">
+                  <label for="active-donor-select" style="font-size: 0.74rem; text-transform: uppercase; font-weight: 700; color: var(--color-muted-text); display: block; margin-bottom: 0.25rem;">
+                    Switch Donor Profile:
+                  </label>
+                  <select id="active-donor-select" class="nexus-select" onchange="window.switchDonorProfile(this.value)" style="padding: 0.35rem 0.65rem; font-size: 0.85rem; font-weight: 600; border-radius: var(--radius-sm); border: 1px solid var(--color-nude-beige); cursor: pointer;">
+                    <option value="Margaret Sharma">Margaret Sharma (ID: USR-101)</option>
+                    <option value="Pari Singhal">Pari Singhal (ID: USR-103)</option>
+                    <option value="Aarav Patel">Aarav Patel (ID: USR-102)</option>
+                    <option value="Yashasvi Sharma">Yashasvi Sharma (ID: USR-104)</option>
+                    <option value="Rohan & Sneha Joshi">Rohan & Sneha Joshi (ID: USR-105)</option>
+                  </select>
                 </div>
-                <div style="background: var(--color-warm-cream); padding: 1rem 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center;">
-                  <span style="font-size: 0.8rem; color: var(--color-muted-text); text-transform: uppercase;">Contributions</span>
-                  <div id="donor-total-txns" style="font-size: 1.6rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif);">4 Donations</div>
+                <div style="background: var(--color-warm-cream); padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center; min-width: 110px;">
+                  <span style="font-size: 0.75rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 600;">Total Given</span>
+                  <div id="donor-total-given" style="font-size: 1.4rem; font-weight: 700; color: var(--color-terracotta); font-family: var(--font-serif);">₹0</div>
+                </div>
+                <div style="background: var(--color-warm-cream); padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); text-align: center; min-width: 110px;">
+                  <span style="font-size: 0.75rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 600;">Contributions</span>
+                  <div id="donor-total-txns" style="font-size: 1.4rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif);">0 Donations</div>
                 </div>
               </div>
             </div>
 
-            <!-- Active Campaigns Available to Support (All Campaigns in Donor Account) -->
+            <!-- Active Campaigns Available to Support / Donate -->
             <div style="margin-bottom: 2.25rem;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
                 <div>
-                  <span class="badge badge-terracotta" style="margin-bottom: 0.35rem;">Verified Causes</span>
-                  <h3 style="margin: 0.2rem 0 0.15rem; font-size: 1.35rem;">Active Campaigns Available to Support</h3>
+                  <span class="badge badge-terracotta" style="margin-bottom: 0.35rem;">Verified Causes Available to Support</span>
+                  <h3 style="margin: 0.2rem 0 0.15rem; font-size: 1.35rem;" id="donor-campaigns-heading">Active Campaigns Available for Donation</h3>
                   <p class="text-muted" style="margin: 0; font-size: 0.88rem;">
-                    Select any cause below to inspect verified financial records and simulate contributions.
+                    Select any cause below to inspect verified financial records and make a direct simulated donation.
                   </p>
                 </div>
                 <button type="button" class="btn btn-outline" onclick="switchDashboardTab('portal-explore')" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">
@@ -407,9 +443,9 @@
                       <th>Cause / Campaign</th>
                       <th>Category</th>
                       <th>Target Goal</th>
-                      <th>Collected</th>
-                      <th>Audited Balance</th>
-                      <th>Progress</th>
+                      <th>Collected So Far</th>
+                      <th>Audited Remaining</th>
+                      <th>Funding Progress</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -420,12 +456,19 @@
               </div>
             </div>
 
-            <h3>Giving History & Simulated Tax Receipts</h3>
-            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.25rem;">
-              Every simulated transaction contains a cryptographic transaction reference ID recorded in the permanent fund ledger.
-            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+              <div>
+                <h3 style="margin: 0 0 0.25rem;">Giving History & Simulated Tax Receipts</h3>
+                <p class="text-muted" style="font-size: 0.88rem; margin: 0;">
+                  Audit-verified personal ledger of your contributions with instant verifiable tax receipts.
+                </p>
+              </div>
+              <button type="button" class="btn btn-outline" onclick="window.clearDonorTransactions()" style="font-size: 0.78rem; padding: 0.35rem 0.75rem; color: #b73838; border-color: #e5b4b4;">
+                🗑️ Clear My History
+              </button>
+            </div>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto; margin-top: 1rem;">
               <table class="nexus-table">
                 <thead>
                   <tr>
@@ -434,6 +477,7 @@
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Audit Ref ID</th>
+                    <th>Receipt</th>
                   </tr>
                 </thead>
                 <tbody id="donor-history-tbody">
@@ -450,10 +494,12 @@
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
               <div>
                 <span class="badge badge-terracotta">Fundraiser Portal</span>
-                <h2 style="margin: 0.5rem 0 0.25rem;">Fund Management & Expenditure Logging</h2>
-                <p class="text-muted" style="margin: 0;">Organizers must report itemized expenses and upload invoice evidence for admin audit approval.</p>
+                <h2 style="margin: 0.5rem 0 0.25rem;">Fund Management &amp; Expenditure Logging</h2>
+                <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Manage live campaigns and submit transparent expenditure receipts for Admin approval.</p>
               </div>
-              <button class="btn btn-primary" onclick="showNexusFeedback('Campaign creation wizard ready!')">+ Start New Campaign</button>
+              <div style="display: flex; gap: 0.6rem; align-items: center;">
+                <button type="button" class="btn btn-primary" onclick="openCreateCampaignModal()">+ Start New Campaign</button>
+              </div>
             </div>
 
             <div style="overflow-x: auto;">
@@ -476,39 +522,133 @@
           </div>
         </div>
 
-        <!-- VIEW 4: Admin & Transparency Audit Room (Matching Slide 27) -->
+        <!-- VIEW 4: Admin & Transparency Audit Room (Full Auditor Oversight) -->
         <div class="portal-view" id="portal-admin" style="display: none;">
           <div style="background: var(--color-white); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-xl); padding: 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-card);">
+            
+            <!-- Top Header & Role Status -->
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
               <div>
                 <span class="badge badge-sage">🛡️ Authenticated Platform Auditor</span>
-                <h2 style="margin: 0.5rem 0 0.25rem;">Financial Transparency & Risk Oversight</h2>
-                <p class="text-muted" style="margin: 0;">Logged in as: <strong>Platform Auditor (USR-901)</strong> &bull; Full Authorization Active</p>
+                <h2 style="margin: 0.5rem 0 0.25rem;">Financial Transparency &amp; Risk Oversight</h2>
+                <p class="text-muted" style="margin: 0;">Logged in as: <strong>Platform Auditor (USR-901)</strong> &bull; Full Regulatory Authority Active</p>
               </div>
-              <button class="btn btn-outline" onclick="logoutUser()" style="border-color: #b73838; color: #b73838; font-size: 0.85rem; padding: 0.45rem 1rem;">
-                🔒 Lock & Exit Admin
-              </button>
-            </div>
-
-            <!-- Risk Engine Status Card -->
-            <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-              <div>
-                <strong style="color: var(--color-cocoa-heading); font-size: 0.98rem;">⚙️ Core Risk Evaluation Engine Status</strong>
-                <p style="font-size: 0.84rem; color: var(--color-muted-text); margin: 0.25rem 0 0;">
-                  Rule-based weights active: Missing Info (+20), High Text Similarity (+25), Target Inconsistency (+15).
-                </p>
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="window.resetAllCampaignsToDefault()" style="font-size: 0.85rem; padding: 0.45rem 0.85rem; color: #b73838; border-color: #e5b4b4;" title="Reset platform back to 5 default verified campaigns">
+                  🔄 Reset Defaults
+                </button>
+                <button class="btn btn-outline" onclick="renderAdminDashboard(); window.showNexusFeedback('Admin audit view refreshed.');" style="font-size: 0.85rem; padding: 0.45rem 0.85rem;">
+                  🔄 Refresh View
+                </button>
+                <button class="btn btn-outline" onclick="logoutUser()" style="border-color: #b73838; color: #b73838; font-size: 0.85rem; padding: 0.45rem 1rem;">
+                  🔒 Lock &amp; Exit Admin
+                </button>
               </div>
-              <span class="badge badge-sage">All Active Causes Low Risk</span>
             </div>
 
-            <h3>Pending Expense Claims Awaiting Admin Audit</h3>
-            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">
-              Approving an expense deducts it from the campaign's <strong>Recorded Remaining Balance</strong>.
-            </p>
-
-            <div id="admin-audit-cards">
-              <!-- Rendered dynamically -->
+            <!-- Platform Liquidity & Escrow Reserve Cards Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+              <div class="liquidity-metric-card" style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); padding: 1.15rem; border-radius: var(--radius-md);">
+                <span style="font-size: 0.74rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Platform Inflow</span>
+                <div id="admin-metric-inflow" style="font-size: 1.45rem; font-weight: 700; color: var(--color-cocoa-heading); font-family: var(--font-serif); margin: 0.25rem 0;">₹7,61,500</div>
+                <span style="font-size: 0.72rem; color: var(--color-forest-sage);">✓ 100% Cryptographic Ledger Inflow</span>
+              </div>
+              <div class="liquidity-metric-card" style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); padding: 1.15rem; border-radius: var(--radius-md);">
+                <span style="font-size: 0.74rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Audited Outflow</span>
+                <div id="admin-metric-outflow" style="font-size: 1.45rem; font-weight: 700; color: var(--color-terracotta); font-family: var(--font-serif); margin: 0.25rem 0;">₹2,09,000</div>
+                <span style="font-size: 0.72rem; color: var(--color-muted-text);">Verified Invoices &amp; Bills</span>
+              </div>
+              <div class="liquidity-metric-card" style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); padding: 1.15rem; border-radius: var(--radius-md);">
+                <span style="font-size: 0.74rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Escrow Vault Reserve</span>
+                <div id="admin-metric-reserve" style="font-size: 1.45rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif); margin: 0.25rem 0;">₹5,52,500</div>
+                <span style="font-size: 0.72rem; color: var(--color-forest-sage);">✓ Safe Liquid Unspent Capital</span>
+              </div>
+              <div class="liquidity-metric-card" style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); padding: 1.15rem; border-radius: var(--radius-md);">
+                <span style="font-size: 0.74rem; color: var(--color-muted-text); text-transform: uppercase; font-weight: 700;">Transparency Index</span>
+                <div id="admin-metric-trust" style="font-size: 1.45rem; font-weight: 700; color: var(--color-forest-sage); font-family: var(--font-serif); margin: 0.25rem 0;">98.4%</div>
+                <span style="font-size: 0.72rem; color: var(--color-forest-sage);">● Real-Time Formula Audited</span>
+              </div>
             </div>
+
+            <!-- SECTION 0: Pending Campaign Approvals (Admin Gatekeeper Queue) -->
+            <div id="admin-pending-campaigns-section" class="admin-pending-section" style="margin-bottom: 2rem; background: var(--color-light-beige); border: 2px solid var(--color-terracotta); border-radius: var(--radius-lg); padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+                <div>
+                  <span class="badge badge-terracotta">🚨 Regulatory Gatekeeper</span>
+                  <h3 style="margin: 0.25rem 0 0.15rem; font-size: 1.3rem;">New Campaigns Awaiting Legal Document Verification</h3>
+                  <p class="text-muted" style="margin: 0; font-size: 0.85rem;">
+                    Campaigns submitted by fundraisers are held here. They remain hidden from public explore until Platform Auditor inspects credentials and approves them.
+                  </p>
+                </div>
+                <span id="admin-pending-campaigns-count" class="badge badge-terracotta" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">
+                  0 Pending Verification
+                </span>
+              </div>
+
+              <div id="admin-pending-campaigns-cards">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- SECTION 1: All Registered Campaigns & Regulatory Document Audit Table -->
+            <div style="margin-bottom: 2.5rem; background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-lg); padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+                <div>
+                  <span class="badge badge-sage">Regulatory Due Diligence</span>
+                  <h3 style="margin: 0.25rem 0 0.15rem; font-size: 1.3rem;">Campaign Oversight &amp; Document Verification</h3>
+                  <p class="text-muted" style="margin: 0; font-size: 0.85rem;">
+                    Admin verifies organizer registration deeds, inspects attached legal certificates, and overrides or flags risk scores.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;" onclick="openCreateCampaignModal()">
+                  + Create Test Campaign
+                </button>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.86rem; background: var(--color-white); border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                  <thead>
+                    <tr style="background: var(--color-light-beige); text-align: left; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted-text);">
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">Campaign &amp; Category</th>
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">Organizer &amp; Legal ID</th>
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">Legal Document</th>
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">Risk Evaluation</th>
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige);">Target / Balance</th>
+                      <th style="padding: 0.85rem; border-bottom: 1px solid var(--color-nude-beige); text-align: right;">Admin Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-campaigns-tbody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SECTION 2: FIFO Chronological Review Queue (Expense Disbursements) -->
+            <div style="margin-bottom: 2rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <div>
+                  <span class="badge badge-terracotta">FIFO Data Structure</span>
+                  <h3 style="margin: 0.25rem 0 0.15rem; font-size: 1.3rem;">Pending Expense Claims (First-In, First-Out Queue)</h3>
+                  <p class="text-muted" style="margin: 0; font-size: 0.85rem;">
+                    Admin inspects vendor bills and approves disbursements. Strict budget safeguards prevent approving claims exceeding collected funds.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <button type="button" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;" onclick="addDemoPendingExpense()">
+                    + Add Demo Claim (₹15,000)
+                  </button>
+                  <span id="admin-queue-count" class="badge badge-peach" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">
+                    0 Tasks in Queue
+                  </span>
+                </div>
+              </div>
+
+              <div id="admin-audit-cards">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -718,7 +858,7 @@
       </div>
 
       <!-- Campaign-specific Donations Ledger -->
-      <h4 style="margin-bottom: 0.75rem;">Simulated Inflow & Donation Ledger</h4>
+      <h4 id="modal-donations-section-title" style="margin-bottom: 0.75rem;">Simulated Inflow & Donation Ledger</h4>
       <div style="overflow-x: auto; margin-bottom: 2rem;">
         <table class="nexus-table">
           <thead>
@@ -842,6 +982,26 @@
           <span>Contribution Amount:</span>
           <strong id="receipt-amount" style="color: var(--color-terracotta); font-family: var(--font-serif);">₹0</strong>
         </div>
+        
+        <!-- Cryptographic 80G & Merkle Verification Section -->
+        <div style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--color-nude-beige); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--color-forest-sage); text-transform: uppercase;">
+              🛡️ Section 80G Tax Exemption Certified
+            </div>
+            <div style="font-size: 0.76rem; color: var(--color-muted-text); margin-top: 0.15rem;">
+              Cryptographic Checksum: <code id="receipt-crypto-hash" class="hash-code" style="font-size: 0.72rem;">0x01E8E12EC6F78A10</code>
+            </div>
+            <div style="font-size: 0.74rem; color: var(--color-muted-text); margin-top: 0.15rem;">
+              Status: <span style="color: var(--color-forest-sage); font-weight: 600;">Anchored in C++ Immutable Ledger</span>
+            </div>
+          </div>
+          <div class="receipt-seal">
+            <span>GOVT 80G</span>
+            <span>VERIFIED</span>
+            <span style="font-size: 0.55rem; color: var(--color-muted-text);">IT ACT 1961</span>
+          </div>
+        </div>
       </div>
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
@@ -883,18 +1043,27 @@
           <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Select</button>
         </div>
 
-        <!-- Option 2: Verified Donor (Margaret Sharma) -->
-        <div class="card" style="padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid var(--color-nude-beige); transition: all 0.2s;" onclick="switchUserRole('donor')">
-          <div style="display: flex; align-items: center; gap: 0.85rem;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-pale-sage); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-              👤
+        <!-- Option 2: Verified Donor (Profile Selection) -->
+        <div class="card" style="padding: 1.15rem 1.25rem; border: 1.5px solid var(--color-nude-beige); background: var(--color-white); margin-bottom: 0.75rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-pale-sage); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                👤
+              </div>
+              <div>
+                <div style="font-weight: 700; color: var(--color-cocoa-heading);">Verified Donors (Isolated Profiles)</div>
+                <p class="text-muted" style="font-size: 0.78rem; margin: 0;">Select any individual donor profile to inspect their isolated giving history</p>
+              </div>
             </div>
-            <div>
-              <div style="font-weight: 700; color: var(--color-cocoa-heading);">Margaret Sharma (Verified Donor)</div>
-              <p class="text-muted" style="font-size: 0.8rem; margin: 0;">ID: <code>USR-101</code> &bull; Access personal giving history & receipts</p>
-            </div>
+            <span class="badge badge-sage">Personal Ledgers</span>
           </div>
-          <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Log In</button>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Margaret Sharma')">Margaret Sharma (USR-101)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Pari Singhal')">Pari Singhal (USR-103)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Aarav Patel')">Aarav Patel (USR-102)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Yashasvi Sharma')">Yashasvi Sharma (USR-104)</button>
+            <button type="button" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.76rem;" onclick="switchDonorByName('Rohan & Sneha Joshi')">Rohan & Sneha (USR-105)</button>
+          </div>
         </div>
 
         <!-- Option 3: Fundraiser (Doon Rural Welfare Trust) -->
@@ -926,12 +1095,15 @@
             </div>
           </div>
 
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <input type="password" id="admin-passcode-input" class="nexus-input" placeholder="Enter Admin Password (admin123 or 9010)" style="flex: 1; padding: 0.5rem 0.85rem; font-size: 0.88rem;">
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+            <input type="password" id="admin-passcode-input" class="nexus-input" placeholder="Enter Admin Password (admin123 or 9010)" onkeydown="if(event.key==='Enter') attemptAdminLogin()" style="flex: 1; padding: 0.5rem 0.85rem; font-size: 0.88rem;">
             <button type="button" class="btn btn-primary" onclick="attemptAdminLogin()" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;">
               Unlock Admin
             </button>
           </div>
+          <button type="button" class="btn btn-outline" style="width: 100%; font-size: 0.8rem; padding: 0.4rem; color: var(--color-forest-sage); border-color: #7D9D6C; background: #EBF3E8; font-weight: 600;" onclick="quickDemoAdminLogin()">
+            ⚡ 1-Click Quick Unlock (For College Viva Demo)
+          </button>
           <div id="admin-auth-error" style="color: #b73838; font-size: 0.82rem; margin-top: 0.4rem; display: none;"></div>
           <small class="text-muted" style="display: block; margin-top: 0.4rem; font-size: 0.78rem;">
             Academic Demo Credentials: Password <code>admin123</code> or PIN <code>9010</code>
@@ -946,9 +1118,511 @@
     </div>
   </div>
 
+  <!-- Modal 5: Create Campaign Modal with Jaccard Anti-Duplicate Detection -->
+  <div class="modal-overlay" id="create-campaign-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 600px;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="margin-bottom: 1.25rem;">
+        <span class="badge badge-terracotta">Anti-Fraud &amp; Similarity Engine</span>
+        <h2 style="font-size: 1.65rem; margin: 0.4rem 0 0.2rem;">Start a New Campaign</h2>
+        <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
+          All new initiatives undergo Jaccard Token text similarity inspection (&ge;65% duplicate block) and heuristic risk evaluation.
+        </p>
+      </div>
+
+      <!-- Alert Box for Duplicate Campaign Warning or Input Error -->
+      <div id="create-campaign-alert" style="display: none; padding: 0.85rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.45;"></div>
+
+      <form id="create-campaign-form">
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+            Campaign Title *
+          </label>
+          <input type="text" id="new-campaign-title" class="nexus-input" placeholder="e.g. Clean Drinking Water for Kalsi Tribal Village" required style="width: 100%;">
+          <small class="text-muted" style="font-size: 0.76rem; display: block; margin-top: 0.25rem;">
+            Tip: Duplicate titles with &ge;65% word overlap with existing campaigns will be automatically rejected.
+          </small>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Category *
+            </label>
+            <select id="new-campaign-category" class="nexus-select" style="width: 100%;">
+              <option value="education">Education &amp; Health</option>
+              <option value="healthcare">Healthcare Relief</option>
+              <option value="disaster">Disaster Relief</option>
+              <option value="community" selected>Rural Community</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Funding Target (₹) *
+            </label>
+            <input type="number" id="new-campaign-target" class="nexus-input" placeholder="e.g. 150000" min="1000" step="1000" required style="width: 100%;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Organizer Name
+            </label>
+            <input type="text" id="new-campaign-organizer" class="nexus-input" placeholder="Doon Rural Welfare Trust" style="width: 100%;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Location
+            </label>
+            <input type="text" id="new-campaign-location" class="nexus-input" placeholder="Dehradun, Uttarakhand" style="width: 100%;">
+          </div>
+        </div>
+
+        <!-- Document Verification & Tax Credential Fields -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Organizer PAN / NGO Darpan ID
+            </label>
+            <input type="text" id="new-campaign-pan" class="nexus-input" placeholder="e.g. AAATD1234F or UK/2024/0019" style="width: 100%;">
+            <small class="text-muted" style="font-size: 0.72rem; display: block; margin-top: 0.2rem;">
+              Rule: Missing or invalid PAN triggers +15 to +20 Risk Penalty.
+            </small>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Legal Verification Document *
+            </label>
+            <div style="display: flex; gap: 0.4rem; align-items: center;">
+              <input type="file" id="new-campaign-file-input" style="display: none;" onchange="handleCampaignDocSelected(this)">
+              <button type="button" class="btn btn-outline" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; white-space: nowrap;" onclick="document.getElementById('new-campaign-file-input').click()">
+                📁 Choose File...
+              </button>
+              <input type="hidden" id="new-campaign-doc-name" value="">
+              <input type="hidden" id="new-campaign-doc-dataurl" value="">
+            </div>
+            <div id="new-campaign-doc-badge" style="font-size: 0.75rem; color: #b73838; margin-top: 0.25rem; font-weight: 600;">
+              ⚠️ No document attached (Triggers +30 Risk Score)
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Sample Document Presets -->
+        <div style="margin-bottom: 1rem; background: var(--color-warm-cream); padding: 0.6rem 0.85rem; border-radius: var(--radius-sm); border: 1px dashed var(--color-nude-beige);">
+          <span style="font-size: 0.74rem; font-weight: 700; color: var(--color-cocoa-heading); display: block; margin-bottom: 0.3rem;">
+            Attach Verified Sample Credentials (For Viva / Demo):
+          </span>
+          <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;" onclick="selectCampaignPresetDoc('Trust_Registration_Deed_80G.pdf', 'AAATD1234F')">
+              📄 Trust Deed (80G Verified)
+            </button>
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;" onclick="selectCampaignPresetDoc('NGO_Darpan_Reg_Certificate.pdf', 'UK/2024/09120')">
+              📄 NGO Darpan Reg.
+            </button>
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;" onclick="selectCampaignPresetDoc('AIIMS_Hospital_Estimate_Letter.pdf', 'AIIMS-MED-8812')">
+              📄 Medical Estimate Letter
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+            Purpose &amp; Field Plan (Min. 30 characters) *
+          </label>
+          <textarea id="new-campaign-desc" class="nexus-input" rows="3" placeholder="Explain the urgent requirement, beneficiary group, and expected project milestones..." required style="width: 100%; resize: vertical;"></textarea>
+          <small class="text-muted" style="font-size: 0.76rem; display: block; margin-top: 0.25rem;">
+            Risk Rule: Descriptions under 30 characters trigger an automatic +20 audit risk penalty.
+          </small>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeAllModals()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2;">Verify &amp; Launch Campaign</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 6: Log Expense & Upload Invoice Modal -->
+  <div class="modal-overlay" id="log-expense-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 580px;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="margin-bottom: 1.25rem;">
+        <span class="badge badge-terracotta">Audit Compliance</span>
+        <h2 style="font-size: 1.65rem; margin: 0.4rem 0 0.2rem;">Log Expenditure Claim</h2>
+        <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
+          All claimed expenditures require bill details and are enqueued into the FIFO Admin Audit Queue.
+        </p>
+      </div>
+
+      <div id="expense-budget-notice" style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md); padding: 0.65rem 0.9rem; font-size: 0.82rem; margin-bottom: 1.25rem; color: var(--color-charcoal-body);">
+        <!-- Dynamically updated -->
+      </div>
+
+      <div id="log-expense-alert" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; margin-bottom: 1rem; background: #FCE8E6; border: 1px solid #D9381E; color: #8A1808;"></div>
+
+      <form id="log-expense-form">
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+            Select Campaign *
+          </label>
+          <select id="expense-campaign-select" class="nexus-select" style="width: 100%;" onchange="updateExpenseBudgetNotice()">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Expense Item Title *
+            </label>
+            <input type="text" id="expense-title-input" class="nexus-input" placeholder="e.g. Commercial RO Membrane" required style="width: 100%;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Amount (₹) *
+            </label>
+            <input type="number" id="expense-amount-input" class="nexus-input" placeholder="10000" min="1" step="1" required style="width: 100%;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Vendor / Payee Name *
+            </label>
+            <input type="text" id="expense-vendor-input" class="nexus-input" placeholder="e.g. Himalayan Powertech Ltd." required style="width: 100%;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+              Bill / Invoice Number *
+            </label>
+            <input type="text" id="expense-billno-input" class="nexus-input" placeholder="e.g. GST-INV-2901" required style="width: 100%;">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--color-cocoa-heading); margin-bottom: 0.35rem;">
+            Upload Invoice / Bill Document
+          </label>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="file" id="expense-file-input" style="display: none;">
+            <button type="button" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;" onclick="document.getElementById('expense-file-input').click()">
+              📁 Choose File...
+            </button>
+            <span id="expense-file-badge" style="font-size: 0.8rem; color: var(--color-forest-sage); font-weight: 600;">
+              📎 Tax_Invoice_Verified.pdf (Default Verified Invoice)
+            </span>
+            <input type="hidden" id="expense-doc-name" value="Tax_Invoice_Verified.pdf">
+          </div>
+        </div>
+
+        <!-- Preset Bill Quick-Fill Buttons -->
+        <div style="margin-bottom: 1.25rem; background: var(--color-warm-cream); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); border: 1px dashed var(--color-nude-beige);">
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-cocoa-heading); display: block; margin-bottom: 0.35rem;">
+            Quick Fill with Verified Sample Invoices:
+          </span>
+          <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;" onclick="selectPresetBill('Dual Solar Inverter & Battery Pack', 15000, 'GreenWatt Solar Ltd.', 'INV-2901', 'Solar_Inverter_Bill_2901.pdf')">
+              📄 Solar Inverter (₹15,000)
+            </button>
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;" onclick="selectPresetBill('Emergency Pediatric Medicines', 25000, 'AIIMS Pharmacy Depot', 'PH-7714', 'Pharmacy_Tax_Invoice_7714.pdf')">
+              📄 Pediatric Meds (₹25,000)
+            </button>
+            <button type="button" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;" onclick="selectPresetBill('Emergency Ration Food Grains', 18000, 'Mandi Samiti Store', 'MS-9021', 'Mandi_Purchase_Receipt_9021.pdf')">
+              📄 Relief Food Grains (₹18,000)
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeAllModals()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2;">Submit Expense for Audit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 7: Verified Procurement Invoice Inspector -->
+  <div class="modal-overlay" id="invoice-preview-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 650px; max-height: 92vh; overflow-y: auto;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <span class="badge badge-sage">Verified Procurement Audit Proof</span>
+        <h2 style="font-size: 1.55rem; margin: 0.35rem 0 0.15rem;">Official Tax Invoice Proof</h2>
+        <p class="text-muted" style="font-size: 0.84rem; margin: 0;">
+          Inspect the itemized tax invoice voucher submitted by the organizer for platform audit disbursement.
+        </p>
+      </div>
+
+      <!-- Quick Metadata Bar -->
+      <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.84rem;">
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Supplier / Vendor</span>
+          <strong id="inv-prev-vendor" style="color: var(--color-cocoa-heading);"></strong>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Tax Invoice No.</span>
+          <code id="inv-prev-billno" style="font-weight: 700; color: var(--color-forest-sage);"></code>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Proof File</span>
+          <code id="inv-prev-docname" style="color: var(--color-terracotta);"></code>
+        </div>
+      </div>
+
+      <!-- VISUAL TAX INVOICE SHEET -->
+      <div id="inv-prev-sheet" style="background: #FFFDF9; border: 2px solid #C4A493; border-radius: 6px; padding: 1.5rem 1.75rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); position: relative; color: #2C201A; margin-bottom: 1.25rem;">
+        <!-- Watermark -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); font-size: 2.8rem; font-weight: 900; color: rgba(101, 118, 90, 0.06); white-space: nowrap; pointer-events: none; text-transform: uppercase; letter-spacing: 0.2em; font-family: var(--font-serif);">
+          AUDITED &amp; PAID
+        </div>
+
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #49352B; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <div style="font-size: 0.7rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--color-terracotta);">
+              Official GST Tax Invoice
+            </div>
+            <h3 id="inv-sheet-vendor-name" style="font-size: 1.15rem; margin: 0.2rem 0; color: #2A1A12; font-weight: 700;">
+              Apollo Surgicals &amp; Pharmaceuticals Ltd.
+            </h3>
+            <div style="font-size: 0.72rem; color: #666;">
+              GSTIN: <strong>07AAACP8819Q1ZT</strong> &bull; DL No: <strong>DL-20B/14299</strong>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span style="background: #EBF3E8; color: #2D5016; border: 1px solid #7D9D6C; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block;">
+              TAX INVOICE
+            </span>
+            <div style="font-size: 0.78rem; font-weight: 700; color: #49352B; margin-top: 0.25rem;">
+              Inv: <span id="inv-sheet-billno">PH-7714</span>
+            </div>
+            <div style="font-size: 0.72rem; color: #777;">
+              Date: <span id="inv-sheet-date">2026-10-18</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bill To / Campaign Info -->
+        <div style="background: rgba(217, 135, 98, 0.06); border-left: 3px solid #D98762; padding: 0.6rem 0.85rem; border-radius: 0 4px 4px 0; margin-bottom: 1rem; font-size: 0.82rem;">
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <span style="font-size: 0.7rem; text-transform: uppercase; color: #89563F; font-weight: 700; display: block;">Billed To Platform Initiative:</span>
+              <strong id="inv-sheet-campaign" style="color: #2A1A12;">Emergency Pediatric Heart Surgery for 3-Year-Old Baby Aarav</strong>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.7rem; text-transform: uppercase; color: #89563F; font-weight: 700; display: block;">Disbursement Escrow:</span>
+              <span style="color: #2D5016; font-weight: 700;">Fund Nexus Escrow Vault</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Itemized Table -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 1rem;">
+          <thead>
+            <tr style="background: #F4EAE1; color: #49352B; border-bottom: 1px solid #C4A493; text-align: left; font-size: 0.72rem; text-transform: uppercase;">
+              <th style="padding: 0.5rem 0.6rem;">Item Description</th>
+              <th style="padding: 0.5rem 0.6rem; text-align: center;">HSN</th>
+              <th style="padding: 0.5rem 0.6rem; text-align: center;">Qty</th>
+              <th style="padding: 0.5rem 0.6rem; text-align: right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #EADBCE;">
+              <td style="padding: 0.55rem 0.6rem;">
+                <strong id="inv-sheet-title" style="color: #2A1A12;">Specialized Pediatric Cardiac Antibiotics &amp; IV Consumables</strong>
+                <div style="font-size: 0.7rem; color: #777;">Batch: #BT-9902 &bull; Exp: 12/2027 &bull; Hospital Grade</div>
+              </td>
+              <td style="padding: 0.55rem 0.6rem; text-align: center; color: #666; font-family: monospace;">3004</td>
+              <td style="padding: 0.55rem 0.6rem; text-align: center; color: #49352B; font-weight: 600;">1 Lot</td>
+              <td style="padding: 0.55rem 0.6rem; text-align: right; font-weight: 700; color: #2A1A12;" id="inv-sheet-taxable">₹21,186</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #EADBCE; font-size: 0.76rem; color: #666;">
+              <td colspan="3" style="padding: 0.35rem 0.6rem; text-align: right;">CGST (9%) + SGST (9%)</td>
+              <td style="padding: 0.35rem 0.6rem; text-align: right;" id="inv-sheet-tax">₹3,814</td>
+            </tr>
+            <tr style="background: #F7EFE9; font-weight: 700; font-size: 0.95rem;">
+              <td colspan="3" style="padding: 0.55rem 0.6rem; text-align: right; color: #49352B;">Total Verified Gross:</td>
+              <td style="padding: 0.55rem 0.6rem; text-align: right; color: #2D5016;" id="inv-sheet-total">₹25,000</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Footer Signatures & Stamp -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed #C4A493; padding-top: 0.75rem; flex-wrap: wrap; gap: 0.75rem;">
+          <!-- Seal -->
+          <div style="text-align: center;">
+            <div style="width: 58px; height: 58px; border-radius: 50%; border: 2px dashed #65765A; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #2D5016; text-transform: uppercase; margin: 0 auto 0.2rem; background: rgba(101, 118, 90, 0.08); line-height: 1.1;">
+              PAID &amp;<br>VERIFIED<br>BILL
+            </div>
+            <span style="font-size: 0.66rem; color: #65765A;">Vendor Certified</span>
+          </div>
+
+          <!-- Hash -->
+          <div style="text-align: center;">
+            <div style="font-family: monospace; font-size: 0.68rem; color: #6E442F; background: #FFF; padding: 0.2rem 0.45rem; border: 1px solid #DDC5B2; border-radius: 4px; display: inline-block;">
+              🧾 <span id="inv-sheet-hash">SHA-256: 0xE8B74A91...</span>
+            </div>
+            <div style="font-size: 0.64rem; color: #888; margin-top: 0.2rem;">Disbursements Ledger Attached</div>
+          </div>
+
+          <!-- Signature -->
+          <div style="text-align: center;">
+            <div style="font-family: 'Brush Script MT', cursive, serif; font-size: 1.35rem; color: #1E3A8A; margin-bottom: -0.2rem;">
+              R. K. Malhotra
+            </div>
+            <div style="border-top: 1px solid #444; width: 110px; margin: 0 auto 0.2rem;"></div>
+            <span style="font-size: 0.66rem; font-weight: 700; color: #2A1A12; display: block;">Authorized Signatory</span>
+            <span style="font-size: 0.62rem; color: #777;">Chief Pharmacist / Vendor</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons in Invoice Inspector -->
+      <div style="display: flex; gap: 0.75rem;">
+        <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeAllModals()">
+          Close Inspector
+        </button>
+        <button type="button" class="btn btn-secondary" style="flex: 1.5; display: none;" id="inv-prev-approve-btn">
+          ✓ Approve &amp; Deduct Claim
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 8: Legal Campaign Document Inspector -->
+  <div class="modal-overlay" id="campaign-doc-preview-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container" style="max-width: 680px; max-height: 92vh; overflow-y: auto;">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 1rem;">
+        <span class="badge badge-sage">Legal Due Diligence Verification</span>
+        <h2 style="font-size: 1.55rem; margin: 0.35rem 0 0.15rem;">Official Certificate Inspector</h2>
+        <p class="text-muted" style="font-size: 0.84rem; margin: 0;">
+          Inspect the uploaded statutory credential and verified compliance certificate submitted by the organizer.
+        </p>
+      </div>
+
+      <!-- Quick Metadata Bar -->
+      <div style="background: var(--color-warm-cream); border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.84rem;">
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Organizer Entity</span>
+          <strong id="camp-prev-organizer" style="color: var(--color-cocoa-heading);"></strong>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Statutory Reg / PAN ID</span>
+          <code id="camp-prev-pan" style="font-weight: 700; color: var(--color-forest-sage);"></code>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block;">Attached Credential</span>
+          <code id="camp-prev-docname" style="color: var(--color-terracotta);"></code>
+        </div>
+      </div>
+
+      <!-- VISUAL CERTIFICATE VIEWER CONTAINER -->
+      <div id="camp-prev-visual-container" style="margin-bottom: 1.25rem;">
+        
+        <!-- Uploaded Image Preview (If JPG/PNG) -->
+        <div id="camp-prev-img-wrap" style="display: none; text-align: center; background: #000; padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--color-nude-beige); margin-bottom: 0.75rem;">
+          <img id="camp-prev-uploaded-img" src="" alt="Uploaded Document" style="max-width: 100%; max-height: 420px; object-fit: contain; border-radius: 4px;">
+        </div>
+
+        <!-- Uploaded PDF Viewer (If PDF) -->
+        <div id="camp-prev-pdf-wrap" style="display: none; margin-bottom: 0.75rem;">
+          <iframe id="camp-prev-uploaded-pdf" src="" style="width: 100%; height: 380px; border: 1px solid var(--color-nude-beige); border-radius: var(--radius-md);"></iframe>
+        </div>
+
+        <!-- Rendered Authentic Certificate Document Sheet -->
+        <div id="camp-prev-certificate-sheet" style="background: #FFFDF9; border: 3px double #A96F52; border-radius: 6px; padding: 1.75rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.06); position: relative; color: #2C201A;">
+          <!-- Ornamental Watermark -->
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-25deg); font-size: 3rem; font-weight: 900; color: rgba(169, 111, 82, 0.05); white-space: nowrap; pointer-events: none; text-transform: uppercase; letter-spacing: 0.2em; font-family: var(--font-serif);">
+            GOVERNMENT VERIFIED
+          </div>
+
+          <!-- Header Emblem & Authority -->
+          <div style="text-align: center; border-bottom: 2px solid #89563F; padding-bottom: 0.75rem; margin-bottom: 1.15rem;">
+            <div style="font-size: 2.2rem; margin-bottom: 0.2rem;" id="cert-emblem-icon">🏛️</div>
+            <div id="cert-issuing-authority" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: #6E442F;">
+              Government of Uttarakhand &bull; Registrar of Societies &amp; Public Trusts
+            </div>
+            <h3 id="cert-official-title" style="font-family: var(--font-serif); font-size: 1.25rem; margin: 0.35rem 0 0.15rem; color: #3A2318; font-weight: 700;">
+              Statutory Trust Registration Certificate
+            </h3>
+            <span id="cert-sub-authority" style="font-size: 0.74rem; color: #7A5B4C; font-style: italic;">
+              Under Section 12A &amp; 80G of the Indian Income Tax Act, 1961
+            </span>
+          </div>
+
+          <!-- Certificate Body Details -->
+          <div style="font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.15rem;">
+            <p style="margin: 0 0 0.65rem;">
+              This is to certify that <strong><span id="cert-holder-name" style="text-decoration: underline;">Doon Rural Welfare Trust</span></strong> (Statutory ID: <strong><code id="cert-pan-display" style="color: #2D5016; background: #EBF3E8; padding: 0.15rem 0.4rem; border-radius: 4px;">AAATD1234F</code></strong>) has been formally authenticated and registered under the state charitable regulatory registrar.
+            </p>
+            <div style="background: rgba(169, 111, 82, 0.06); border-left: 4px solid #A96F52; padding: 0.65rem 0.85rem; margin-bottom: 0.75rem; border-radius: 0 4px 4px 0;">
+              <div style="font-size: 0.74rem; text-transform: uppercase; color: #7A5B4C; font-weight: 700;">Authorized Public Initiative</div>
+              <div id="cert-campaign-title" style="font-weight: 700; color: #3A2318; font-size: 0.95rem;">Solar Water Filtration for Rural Hill Schools</div>
+              <div style="font-size: 0.76rem; color: #555; margin-top: 0.2rem;">Location: <span id="cert-location">Tehri Garhwal, Uttarakhand</span> &bull; Verified Goal: <strong id="cert-target">₹1,50,000</strong></div>
+            </div>
+            <p style="margin: 0; font-size: 0.8rem; color: #5A4336;">
+              The submitted documents have successfully satisfied all anti-fraud and identity compliance verifications. All platform disbursements are strictly governed by transparent itemized voucher ledger protocols.
+            </p>
+          </div>
+
+          <!-- Certificate Footer Signatures & Stamp -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed #A96F52; padding-top: 0.85rem; flex-wrap: wrap; gap: 0.75rem;">
+            <!-- Left: Registrar Seal -->
+            <div style="text-align: center;">
+              <div style="width: 60px; height: 60px; border-radius: 50%; border: 2px dashed #A96F52; display: flex; align-items: center; justify-content: center; font-size: 0.64rem; font-weight: 800; color: #89563F; text-transform: uppercase; margin: 0 auto 0.2rem; background: rgba(169, 111, 82, 0.05); line-height: 1.1;">
+                OFFICIAL<br>REGISTRAR<br>SEAL
+              </div>
+              <span style="font-size: 0.68rem; color: #7A5B4C;">State Registry Dehradun</span>
+            </div>
+
+            <!-- Center: QR & Verification Hash -->
+            <div style="text-align: center;">
+              <div style="font-family: monospace; font-size: 0.7rem; color: #6E442F; background: #FFF; padding: 0.2rem 0.5rem; border: 1px solid #DDC5B2; border-radius: 4px; display: inline-block;">
+                🛡️ <span id="cert-hash-display">SHA-256: 0x94A1F8D9...</span>
+              </div>
+              <div style="font-size: 0.66rem; color: #888; margin-top: 0.2rem;">Attested &bull; Validated Live</div>
+            </div>
+
+            <!-- Right: Signature -->
+            <div style="text-align: center;">
+              <div style="font-family: 'Brush Script MT', cursive, serif; font-size: 1.4rem; color: #1E3A8A; margin-bottom: -0.2rem;">
+                Dr. Arvind Singhal
+              </div>
+              <div style="border-top: 1px solid #444; width: 130px; margin: 0 auto 0.2rem;"></div>
+              <span style="font-size: 0.68rem; font-weight: 700; color: #3A2318; display: block;">Authorized Signatory</span>
+              <span style="font-size: 0.64rem; color: #7A5B4C;">Regulatory Due Diligence Officer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons in Inspector -->
+      <div style="display: flex; gap: 0.75rem;" id="camp-prev-actions">
+        <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeAllModals()">
+          Close Inspector
+        </button>
+        <button type="button" class="btn btn-secondary" style="flex: 1.5; display: none;" id="camp-prev-approve-btn">
+          ✓ Approve &amp; Publish Campaign
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript Scripts with Cache Busting -->
-  <script src="js/campaigns-data.js?v=12"></script>
-  <script src="js/campaigns-ui.js?v=12"></script>
-  <script src="js/main.js?v=12"></script>
+  <script src="js/campaigns-data.js?v=19"></script>
+  <script src="js/campaigns-ui.js?v=19"></script>
+  <script src="js/main.js?v=19"></script>
 </body>
 </html>
