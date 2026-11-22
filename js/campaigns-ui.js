@@ -633,6 +633,12 @@ const DONOR_PROFILES = {
   "rohan & sneha joshi": { id: "USR-105", name: "Rohan & Sneha Joshi", email: "rohan.joshi@outlook.com", pin: "1050" }
 };
 
+// Load any custom-registered donors from localStorage
+try {
+  const savedCustom = JSON.parse(localStorage.getItem('fund_nexus_custom_donors') || '{}');
+  Object.assign(DONOR_PROFILES, savedCustom);
+} catch (e) {}
+
 window.switchDonorByName = function(donorName, bypassPin = false) {
   if (!donorName) return;
   const key = donorName.trim().toLowerCase();
@@ -690,6 +696,38 @@ window.openDonorProfileByName = function(encodedName) {
 
 window.switchDonorProfile = function(donorName) {
   window.switchDonorByName(donorName);
+};
+
+window.openRegisterNewDonorModal = function() {
+  const name = prompt("👤 Register New Donor Account\n\nEnter Full Name (e.g. Ananya Verma):");
+  if (!name || !name.trim()) return;
+
+  const cleanName = name.trim();
+  const defaultEmail = `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '.')}@gmail.com`;
+  const email = prompt(`📧 Enter Email Address for ${cleanName}:`, defaultEmail);
+  if (!email || !email.trim()) return;
+
+  const pin = prompt(`🔐 Set a 4-Digit Security PIN for ${cleanName} (to prevent unauthorized account access):`, "1234");
+  if (!pin || !pin.trim()) return;
+
+  const newId = "USR-" + Math.floor(106 + Math.random() * 890);
+  const key = cleanName.toLowerCase();
+
+  DONOR_PROFILES[key] = {
+    id: newId,
+    name: cleanName,
+    email: email.trim(),
+    pin: pin.trim()
+  };
+
+  try {
+    const customDonors = JSON.parse(localStorage.getItem('fund_nexus_custom_donors') || '{}');
+    customDonors[key] = DONOR_PROFILES[key];
+    localStorage.setItem('fund_nexus_custom_donors', JSON.stringify(customDonors));
+  } catch (e) {}
+
+  window.switchDonorByName(cleanName, true);
+  window.showNexusFeedback(`🎉 New Donor Account Created! Welcome, ${cleanName} (${newId}). Your 4-digit PIN is active.`);
 };
 
 window.clearDonorTransactions = function() {
